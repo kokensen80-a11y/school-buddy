@@ -1,0 +1,10 @@
+.sb-confirm__message {
+  color: var(--color-text-secondary);
+  font-size: var(--text-base);
+}
+
+.sb-confirm__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}

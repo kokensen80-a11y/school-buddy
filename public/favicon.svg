@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!--
+    School Buddy mark: a friendly face whose smile is an open book.
+    This file is the source of every raster icon: scripts/gen-icons.mjs reuses the defs
+    block (gradient ids sb-bg and sb-glow) and the group with id "glyph", so keep those in
+    place. The same artwork is mirrored in src/components/Logo.tsx.
+  -->
+  <defs>
+    <linearGradient id="sb-bg" x1="0.3" y1="0" x2="0.7" y2="1">
+      <stop offset="0" stop-color="#3a3a3a"/>
+      <stop offset="1" stop-color="#050505"/>
+    </linearGradient>
+    <radialGradient id="sb-glow" cx="0.5" cy="0" r="0.75">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="sb-edge" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity="0.36"/>
+      <stop offset="0.55" stop-color="#fff" stop-opacity="0.04"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0.1"/>
+    </linearGradient>
+  </defs>
+  <g id="tile">
+    <rect width="512" height="512" rx="116" fill="url(#sb-bg)"/>
+    <rect width="512" height="512" rx="116" fill="url(#sb-glow)"/>
+    <rect x="2" y="2" width="508" height="508" rx="114" fill="none" stroke="url(#sb-edge)" stroke-width="4"/>
+  </g>
+  <g id="glyph" fill="#fff">
+    <rect x="160" y="120" width="64" height="84" rx="32"/>
+    <rect x="288" y="120" width="64" height="84" rx="32"/>
+    <path d="M243 288Q243 278 234 272.1A211.6 211.6 0 0 0 122 240A22 22 0 0 0 100 262L100 309.8A26 26 0 0 0 109.6 330A232 232 0 0 0 233 380.9Q243 381.6 243 371.6ZM269 288Q269 278 278 272.1A211.6 211.6 0 0 1 390 240A22 22 0 0 1 412 262L412 309.8A26 26 0 0 1 402.4 330A232 232 0 0 1 279 380.9Q269 381.6 269 371.6Z"/>
+  </g>
+</svg>

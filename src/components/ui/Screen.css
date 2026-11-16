@@ -1,0 +1,119 @@
+.sb-screen {
+  --sb-screen-top: max(20px, calc(var(--safe-top) + 8px));
+  /* Free space under the last content (or under the pinned bottom bar). */
+  --sb-screen-gap: var(--space-6);
+  --sb-screen-bottom: calc(var(--safe-bottom) + var(--sb-screen-gap));
+  --sb-screen-inline: 0px;
+  position: relative;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.sb-screen--padded {
+  --sb-screen-inline: var(--gutter);
+}
+
+.sb-screen--top-bar {
+  --sb-screen-top: calc(var(--topbar-top) + var(--topbar-height) + var(--space-4));
+}
+
+.sb-screen--tab-bar {
+  --sb-screen-bottom: calc(var(--tabbar-bottom) + var(--tabbar-height) + var(--sb-screen-gap));
+}
+
+.sb-screen--bottom-bar {
+  --sb-screen-gap: var(--space-3);
+}
+
+.sb-screen__scroll {
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-content);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+  /* Keeps a focused field clear of the floating bars when the browser scrolls to it. */
+  scroll-padding-top: var(--sb-screen-top);
+  scroll-padding-bottom: var(--sb-screen-bottom);
+}
+
+.sb-screen__column {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: var(--content-max);
+  min-height: 100%;
+  margin-inline: auto;
+  padding-top: var(--sb-screen-top);
+  padding-bottom: var(--sb-screen-bottom);
+  padding-left: max(var(--sb-screen-inline), var(--safe-left));
+  padding-right: max(var(--sb-screen-inline), var(--safe-right));
+}
+
+.sb-screen__content {
+  flex: 1 0 auto;
+  min-width: 0;
+}
+
+/* Sticks to the bottom edge while the content scrolls; sits at the end when it fits. */
+.sb-screen__bottom {
+  position: sticky;
+  bottom: var(--sb-screen-bottom);
+  z-index: 2;
+  margin-top: var(--space-6);
+}
+
+/* Soft blur where content slides under the status bar and the floating top bar. */
+.sb-screen__scrim {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: calc(var(--z-bar) - 1);
+  height: calc(var(--sb-screen-top) + var(--space-2));
+  background: linear-gradient(to bottom, rgb(255 255 255 / 0.9), transparent);
+  -webkit-backdrop-filter: blur(var(--blur-sm));
+  backdrop-filter: blur(var(--blur-sm));
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 45%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 45%, transparent 100%);
+  pointer-events: none;
+}
+
+.sb-screen__top {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: var(--z-bar);
+  padding-top: var(--topbar-top);
+  pointer-events: none;
+}
+
+.sb-screen__top-inner {
+  width: 100%;
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding-left: max(var(--gutter), var(--safe-left));
+  padding-right: max(var(--gutter), var(--safe-right));
+}
+
+.sb-screen__top-inner > * {
+  pointer-events: auto;
+}
+
+/* Blurs whatever scrolls behind the pinned bottom bar, fading out upwards. */
+.sb-screen__bottom::before {
+  content: '';
+  position: absolute;
+  top: calc(-1 * var(--space-5));
+  right: calc(-1 * var(--sb-screen-inline));
+  bottom: calc(-1 * var(--sb-screen-bottom));
+  left: calc(-1 * var(--sb-screen-inline));
+  z-index: -1;
+  -webkit-backdrop-filter: blur(var(--blur-sm));
+  backdrop-filter: blur(var(--blur-sm));
+  -webkit-mask-image: linear-gradient(to top, #000 0%, #000 60%, transparent 100%);
+  mask-image: linear-gradient(to top, #000 0%, #000 60%, transparent 100%);
+  pointer-events: none;
+}

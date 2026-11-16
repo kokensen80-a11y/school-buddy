@@ -1,0 +1,35 @@
+.sb-skeleton {
+  display: block;
+  width: 100%;
+  height: 1em;
+  background: linear-gradient(
+    90deg,
+    rgb(0 0 0 / 0.036) 0%,
+    rgb(0 0 0 / 0.072) 50%,
+    rgb(0 0 0 / 0.036) 100%
+  );
+  background-size: 200% 100%;
+  animation: sb-skeleton-shimmer 1.6s ease-in-out infinite;
+}
+
+.sb-skeleton--text {
+  border-radius: var(--radius-xs);
+}
+
+.sb-skeleton--card {
+  border-radius: var(--radius-xl);
+}
+
+.sb-skeleton--circle {
+  border-radius: 50%;
+}
+
+@keyframes sb-skeleton-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+
+  to {
+    background-position: -100% 0;
+  }
+}

@@ -1,0 +1,43 @@
+.sb-section:not(:first-child) {
+  margin-top: var(--space-6);
+}
+
+.sb-section__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-height: 28px;
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-separator);
+}
+
+.sb-section__label {
+  color: var(--color-text-secondary);
+  font-size: var(--text-md);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-snug);
+}
+
+.sb-section__trailing {
+  display: flex;
+  flex: none;
+  align-items: center;
+  color: var(--color-text-secondary);
+  font-size: var(--text-md);
+}
+
+.sb-section__body {
+  padding-top: var(--space-3);
+}
+
+.sb-divider {
+  height: 1px;
+  margin: var(--space-4) 0;
+  background: var(--color-separator);
+}
+
+/* A ghost button in the header lines up with the right edge of the content. */
+.sb-section__trailing .sb-button--ghost {
+  margin-right: calc(-1 * var(--space-3));
+}

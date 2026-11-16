@@ -1,0 +1,94 @@
+.sb-tab-bar {
+  position: fixed;
+  right: 0;
+  bottom: var(--tabbar-bottom);
+  left: 0;
+  z-index: var(--z-bar);
+  display: flex;
+  justify-content: center;
+  padding-left: max(var(--gutter), var(--safe-left));
+  padding-right: max(var(--gutter), var(--safe-right));
+  pointer-events: none;
+}
+
+.sb-tab-bar__pill {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--sb-tab-count), minmax(0, 1fr));
+  width: min(100%, calc(var(--sb-tab-count) * 78px + 8px));
+  height: var(--tabbar-height);
+  padding: 4px;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-lg);
+  pointer-events: auto;
+}
+
+/* The lighter pill behind the active tab; slides when the tab changes. */
+.sb-tab-bar__indicator {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc((100% - 8px) / var(--sb-tab-count));
+  border-radius: var(--radius-pill);
+  background: var(--glass-fill-strong);
+  transform: translateX(calc(var(--sb-tab-index) * 100%));
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+
+.sb-tab-bar__tab {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  min-width: 0;
+  border-radius: var(--radius-pill);
+  color: var(--color-text-secondary);
+  transition:
+    color var(--duration-normal) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+}
+
+.sb-tab-bar__tab--active {
+  color: var(--color-text);
+}
+
+.sb-tab-bar__tab:active {
+  transform: scale(0.94);
+}
+
+.sb-tab-bar__tab:focus-visible {
+  outline-offset: -2px;
+}
+
+.sb-tab-bar__icon {
+  position: relative;
+  display: flex;
+}
+
+.sb-tab-bar__icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.sb-tab-bar__icon--soft-fill svg {
+  fill: rgb(0 0 0 / 0.126);
+}
+
+.sb-tab-bar__badge {
+  position: absolute;
+  top: -5px;
+  left: calc(100% - 9px);
+}
+
+.sb-tab-bar__label {
+  max-width: 100%;
+  overflow: hidden;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  line-height: 1.1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -1,0 +1,17 @@
+.sb-splash {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 100dvh;
+  padding: var(--gutter);
+  text-align: center;
+}
+
+.sb-splash > :not(.sb-ambient) {
+  position: relative;
+  z-index: var(--z-content);
+}
+
+.sb-shell main:focus {
+  outline: none;
+}

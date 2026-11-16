@@ -1,0 +1,27 @@
+/* Registered so a tint change cross-fades instead of jumping. */
+@property --sb-ambient-tint {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #8a8a8a;
+}
+
+/* Clean white page. The tint (a subject colour) only shows as a faint wash at the top. */
+.sb-ambient {
+  --sb-ambient-tint: var(--ambient-tint);
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-ambient);
+  pointer-events: none;
+  background-color: var(--color-bg);
+  transition: --sb-ambient-tint var(--duration-slower) var(--ease-in-out);
+}
+
+@supports (color: color-mix(in srgb, red 10%, white)) {
+  .sb-ambient {
+    background-image: radial-gradient(
+      ellipse 130% 38% at 50% 0%,
+      color-mix(in srgb, var(--sb-ambient-tint) 9%, transparent) 0%,
+      transparent 100%
+    );
+  }
+}

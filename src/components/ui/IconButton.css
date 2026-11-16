@@ -1,0 +1,87 @@
+.sb-icon-button {
+  --sb-icon-button-size: var(--touch-min);
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--sb-icon-button-size);
+  height: var(--sb-icon-button-size);
+  border-radius: 50%;
+  color: var(--color-text);
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out),
+    opacity var(--duration-fast) var(--ease-out);
+}
+
+.sb-icon-button--sm {
+  --sb-icon-button-size: 36px;
+}
+
+/* Keeps the touch target at 44px for the small size. */
+.sb-icon-button--sm::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+}
+
+.sb-icon-button__icon {
+  display: flex;
+}
+
+.sb-icon-button__icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.sb-icon-button--sm .sb-icon-button__icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.sb-icon-button--plain {
+  background: transparent;
+}
+
+.sb-icon-button:active:not(:disabled) {
+  transform: scale(0.94);
+}
+
+.sb-icon-button--glass:active:not(:disabled) {
+  background: var(--glass-fill-strong);
+}
+
+.sb-icon-button--plain:active:not(:disabled) {
+  background: var(--glass-fill);
+}
+
+@media (hover: hover) {
+  .sb-icon-button--glass:hover:not(:disabled) {
+    background: var(--glass-fill-strong);
+  }
+
+  .sb-icon-button--plain:hover:not(:disabled) {
+    background: var(--glass-fill);
+  }
+}
+
+.sb-icon-button:disabled {
+  opacity: 0.4;
+}
+
+.sb-icon-button__badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  box-shadow: 0 0 0 2px rgb(0 0 0 / 0.25);
+}
+
+.sb-glass-pill {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  min-height: var(--touch-min);
+  border-radius: var(--radius-pill);
+}

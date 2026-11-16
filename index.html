@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>School Buddy</title>
+    <meta
+      name="description"
+      content="Jouw studiemaatje: zet je toetsen erin, krijg een leerplan dat bij je past en vergeet nooit meer wanneer je moet leren."
+    />
+    <meta name="application-name" content="School Buddy" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="color-scheme" content="light" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <!-- Icons and manifest: relative URLs so the app also works from a sub-folder. -->
+    <link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <link rel="manifest" href="manifest.webmanifest" />
+
+    <!-- Run full screen when installed on a home screen. -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="School Buddy" />
+
+    <!-- Paint the white background before the stylesheet arrives, so there is no flash. -->
+    <style>
+      html,
+      body {
+        margin: 0;
+        background: #ffffff;
+        color: #0a0a0a;
+      }
+    </style>
+  </head>
+  <body>
+    <noscript>
+      <p
+        style="
+          max-width: 22rem;
+          margin: 0 auto;
+          padding: 30vh 24px 0;
+          font: 600 1.125rem/1.4 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+          text-align: center;
+        "
+      >
+        School Buddy werkt alleen met JavaScript. Zet JavaScript aan in je browser en laad de
+        pagina opnieuw.
+      </p>
+    </noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

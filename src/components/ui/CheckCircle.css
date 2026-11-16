@@ -1,0 +1,123 @@
+.sb-check-circle {
+  --sb-check-size: 26px;
+  --sb-check-color: var(--color-accent);
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--sb-check-size);
+  height: var(--sb-check-size);
+}
+
+/* The real checkbox: invisible, centred, and at least 44px for an easy tap. */
+.sb-check-circle__input {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  width: max(100%, var(--touch-min));
+  height: max(100%, var(--touch-min));
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+}
+
+.sb-check-circle__input:disabled {
+  cursor: default;
+}
+
+.sb-check-circle__ring {
+  position: absolute;
+  inset: 0;
+  border: 2px solid rgb(0 0 0 / 0.2);
+  border-radius: 50%;
+  transition:
+    border-color var(--duration-normal) var(--ease-out),
+    background-color var(--duration-normal) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+}
+
+/* The burst that rings outward when a block is ticked off. */
+.sb-check-circle__ring::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border: 2px solid var(--sb-check-color);
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.sb-check-circle__mark {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: var(--color-on-accent);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sb-check-circle__mark path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.sb-check-circle__input:active:not(:disabled) + .sb-check-circle__ring {
+  transform: scale(0.88);
+}
+
+.sb-check-circle__input:checked + .sb-check-circle__ring {
+  border-color: var(--sb-check-color);
+  background: var(--sb-check-color);
+}
+
+/* Only after a press, so a list of finished blocks does not pop when it appears. */
+.sb-check-circle__input[data-touched]:checked + .sb-check-circle__ring {
+  animation: sb-check-pop var(--duration-slow) var(--ease-spring);
+}
+
+.sb-check-circle__input[data-touched]:checked + .sb-check-circle__ring::after {
+  animation: sb-check-burst 480ms var(--ease-out);
+}
+
+.sb-check-circle__input:checked ~ .sb-check-circle__mark path {
+  stroke-dashoffset: 0;
+}
+
+.sb-check-circle__input[data-touched]:checked ~ .sb-check-circle__mark path {
+  transition: stroke-dashoffset var(--duration-normal) var(--ease-out) 80ms;
+}
+
+.sb-check-circle__input:focus-visible + .sb-check-circle__ring {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+.sb-check-circle__input:disabled ~ * {
+  opacity: 0.4;
+}
+
+@keyframes sb-check-pop {
+  0% {
+    transform: scale(0.8);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes sb-check-burst {
+  0% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.7);
+  }
+}

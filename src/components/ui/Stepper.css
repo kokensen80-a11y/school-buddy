@@ -1,0 +1,60 @@
+.sb-stepper {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 3px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  background: var(--glass-fill-inset);
+}
+
+.sb-stepper--disabled {
+  opacity: 0.5;
+}
+
+.sb-stepper__value {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0 var(--space-2);
+  overflow: hidden;
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sb-stepper__button {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 40px;
+  border-radius: 9px;
+  background: var(--glass-fill);
+  color: var(--color-text);
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    opacity var(--duration-fast) var(--ease-out);
+}
+
+.sb-stepper__button svg {
+  width: 20px;
+  height: 20px;
+}
+
+.sb-stepper__button:active:not(:disabled) {
+  background: var(--glass-fill-strong);
+}
+
+@media (hover: hover) {
+  .sb-stepper__button:hover:not(:disabled) {
+    background: var(--glass-fill-strong);
+  }
+}
+
+.sb-stepper__button:disabled {
+  opacity: 0.35;
+}

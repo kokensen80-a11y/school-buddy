@@ -1,0 +1,17 @@
+.sb-stack {
+  display: flex;
+  min-width: 0;
+}
+
+.sb-stack--column {
+  flex-direction: column;
+}
+
+.sb-stack--row {
+  flex-direction: row;
+  align-items: center;
+}
+
+.sb-stack--wrap {
+  flex-wrap: wrap;
+}

@@ -1,0 +1,153 @@
+.sb-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--touch-min);
+  min-height: var(--touch-min);
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-tight);
+  text-align: center;
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out),
+    opacity var(--duration-fast) var(--ease-out);
+}
+
+.sb-button--sm {
+  min-height: 36px;
+  padding: 0 var(--space-3);
+  border-radius: 10px;
+  font-size: var(--text-md);
+}
+
+/* Keeps the touch target of the small size at 44px. */
+.sb-button--sm::after {
+  content: '';
+  position: absolute;
+  inset: -4px 0;
+}
+
+.sb-button--sm .sb-button__content {
+  gap: 6px;
+  padding: var(--space-1) 0;
+}
+
+.sb-button--sm .sb-button__icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.sb-button--lg {
+  min-height: 52px;
+  padding: 0 var(--space-5);
+  border-radius: 14px;
+}
+
+.sb-button--block {
+  display: flex;
+  width: 100%;
+}
+
+.sb-button__content {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-width: 0;
+  padding: var(--space-2) 0;
+}
+
+.sb-button__icon {
+  display: flex;
+}
+
+.sb-button__icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.sb-button__label {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.sb-button--primary {
+  background: var(--color-accent);
+  color: var(--color-text-inverse);
+}
+
+.sb-button--secondary {
+  background: rgb(0 0 0 / 0.063);
+  color: var(--color-text);
+}
+
+.sb-button--ghost {
+  background: transparent;
+  color: var(--color-text);
+}
+
+.sb-button--danger {
+  background: var(--color-danger-solid);
+  color: #ffffff;
+}
+
+.sb-button:active:not(:disabled, .sb-button--loading) {
+  transform: scale(0.97);
+}
+
+.sb-button--primary:active:not(:disabled, .sb-button--loading) {
+  background: #000000;
+}
+
+.sb-button--secondary:active:not(:disabled, .sb-button--loading) {
+  background: rgb(0 0 0 / 0.099);
+}
+
+.sb-button--ghost:active:not(:disabled, .sb-button--loading) {
+  background: var(--glass-fill);
+}
+
+.sb-button--danger:active:not(:disabled, .sb-button--loading) {
+  background: #b93027;
+}
+
+@media (hover: hover) {
+  .sb-button--primary:hover:not(:disabled, .sb-button--loading) {
+    background: #2b2b2b;
+  }
+
+  .sb-button--secondary:hover:not(:disabled, .sb-button--loading) {
+    background: rgb(0 0 0 / 0.09);
+  }
+
+  .sb-button--ghost:hover:not(:disabled, .sb-button--loading) {
+    background: var(--glass-fill);
+  }
+
+  .sb-button--danger:hover:not(:disabled, .sb-button--loading) {
+    background: #c7352b;
+  }
+}
+
+.sb-button:disabled {
+  opacity: 0.4;
+}
+
+.sb-button--loading {
+  cursor: progress;
+}
+
+.sb-button--loading .sb-button__content {
+  opacity: 0;
+}
+
+.sb-button__spinner {
+  position: absolute;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+}

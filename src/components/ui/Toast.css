@@ -1,0 +1,85 @@
+/* Sits exactly over the floating top bar, like in the reference. */
+.sb-toast-region {
+  position: fixed;
+  top: var(--topbar-top);
+  right: 0;
+  left: 0;
+  z-index: var(--z-toast);
+  display: flex;
+  justify-content: center;
+  padding-left: max(var(--gutter), var(--safe-left));
+  padding-right: max(var(--gutter), var(--safe-right));
+  pointer-events: none;
+}
+
+.sb-toast {
+  --sb-toast-bg: var(--color-success-solid);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  max-width: min(100%, calc(var(--content-max) - 2 * var(--gutter)));
+  min-height: var(--topbar-height);
+  padding: var(--space-2) 18px var(--space-2) var(--space-3);
+  border-radius: 22px;
+  background: var(--sb-toast-bg);
+  box-shadow: var(--shadow-md);
+  color: #ffffff;
+  font-size: var(--text-md);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-snug);
+  cursor: pointer;
+  pointer-events: auto;
+  animation: sb-toast-in var(--duration-slow) var(--ease-spring) both;
+}
+
+.sb-toast--error {
+  --sb-toast-bg: var(--color-danger-solid);
+}
+
+/* Glass toast: the icon mark takes the dark colour of the smoked glass. */
+.sb-toast--info {
+  --sb-toast-bg: var(--color-surface);
+  background: var(--glass-fill-smoked);
+}
+
+.sb-toast--leaving {
+  animation: sb-toast-out 200ms var(--ease-in) both;
+}
+
+.sb-toast__icon {
+  display: flex;
+  flex: none;
+}
+
+/* A solid white disc with the mark cut out in the toast colour. */
+.sb-toast__icon svg {
+  width: 22px;
+  height: 22px;
+  fill: #ffffff;
+  stroke: var(--sb-toast-bg);
+}
+
+.sb-toast__message {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+@keyframes sb-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(-120%) scale(0.96);
+  }
+}
+
+@keyframes sb-toast-out {
+  to {
+    opacity: 0;
+    transform: translateY(-60%) scale(0.96);
+  }
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .sb-toast--info {
+    background: var(--color-surface-raised);
+  }
+}

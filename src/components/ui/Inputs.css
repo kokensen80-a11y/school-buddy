@@ -1,0 +1,90 @@
+/*
+ * Shared look of the text-like controls (TextInput, TextArea, Select, DateInput,
+ * TimeInput): a recessed well, 17px text (no zoom on iOS), at least 48px high.
+ */
+.sb-control {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  margin: 0;
+  padding: 11px 14px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  background: var(--glass-fill-inset);
+  color: var(--color-text);
+  font-size: var(--text-base);
+  line-height: 1.4;
+  -webkit-appearance: none;
+  appearance: none;
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    background-color var(--duration-fast) var(--ease-out);
+}
+
+.sb-control::placeholder {
+  color: var(--color-text-tertiary);
+  opacity: 1;
+}
+
+.sb-control:focus-visible {
+  border-color: transparent;
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: -2px;
+}
+
+.sb-control[aria-invalid='true'] {
+  border-color: var(--color-danger);
+}
+
+.sb-control:disabled {
+  opacity: 0.5;
+}
+
+textarea.sb-control {
+  max-height: 40dvh;
+  resize: none;
+}
+
+/* Native date and time inputs: left-aligned value and a stable height, also when empty (iOS). */
+.sb-control[type='date'],
+.sb-control[type='time'] {
+  text-align: start;
+  font-variant-numeric: tabular-nums;
+}
+
+.sb-control::-webkit-date-and-time-value {
+  min-height: 1.4em;
+  text-align: start;
+}
+
+.sb-control::-webkit-calendar-picker-indicator {
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+.sb-select {
+  position: relative;
+  display: block;
+}
+
+.sb-select__control {
+  padding-right: 42px;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.sb-select__control--placeholder {
+  color: var(--color-text-tertiary);
+}
+
+.sb-select__chevron {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  width: 18px;
+  height: 18px;
+  color: var(--color-text-secondary);
+  transform: translateY(-50%);
+  pointer-events: none;
+}

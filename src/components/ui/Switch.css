@@ -1,0 +1,46 @@
+.sb-switch {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  width: 51px;
+  height: 31px;
+  padding: 2px;
+  border-radius: var(--radius-pill);
+  background: rgb(0 0 0 / 0.099);
+  transition:
+    background-color var(--duration-normal) var(--ease-out),
+    opacity var(--duration-fast) var(--ease-out);
+}
+
+/* Extends the touch target to 44px high. */
+.sb-switch::after {
+  content: '';
+  position: absolute;
+  inset: -7px -2px;
+}
+
+.sb-switch--on {
+  background: var(--color-accent);
+}
+
+.sb-switch__thumb {
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow:
+    0 2px 6px rgb(0 0 0 / 0.3),
+    0 0 0 0.5px rgb(0 0 0 / 0.08);
+  transition:
+    transform var(--duration-normal) var(--ease-out),
+    width var(--duration-fast) var(--ease-out);
+}
+
+.sb-switch--on .sb-switch__thumb {
+  transform: translateX(20px);
+}
+
+.sb-switch:disabled {
+  opacity: 0.4;
+}

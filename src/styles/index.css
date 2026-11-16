@@ -1,0 +1,4 @@
+/* School Buddy design system — entry point (imported once by src/main.tsx). */
+@import './tokens.css';
+@import './base.css';
+@import './utilities.css';

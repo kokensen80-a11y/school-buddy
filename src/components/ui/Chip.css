@@ -1,0 +1,106 @@
+.sb-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  min-height: 28px;
+  padding: 0 10px;
+  border: 1px solid rgb(0 0 0 / 0.09);
+  border-radius: var(--radius-pill);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-tight);
+  vertical-align: middle;
+}
+
+.sb-chip__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sb-chip__dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--sb-dot-color);
+}
+
+.sb-chip__icon {
+  display: flex;
+  flex: none;
+}
+
+.sb-chip__icon svg {
+  width: 14px;
+  height: 14px;
+}
+
+.sb-choice-chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  min-height: 40px;
+  padding: 0 var(--space-4);
+  border: 1px solid rgb(0 0 0 / 0.09);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-text);
+  font-size: var(--text-md);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-tight);
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out),
+    opacity var(--duration-fast) var(--ease-out);
+}
+
+/* Extends the touch target to 44px without making the pill taller. */
+.sb-choice-chip::after {
+  content: '';
+  position: absolute;
+  inset: -3px 0;
+}
+
+.sb-choice-chip__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sb-choice-chip__icon {
+  display: flex;
+  flex: none;
+}
+
+.sb-choice-chip__icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.sb-choice-chip--selected {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+  color: var(--color-text-inverse);
+  font-weight: var(--weight-semibold);
+}
+
+.sb-choice-chip:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+@media (hover: hover) {
+  .sb-choice-chip:hover:not(:disabled, .sb-choice-chip--selected) {
+    background: var(--glass-fill);
+  }
+}
+
+.sb-choice-chip:disabled {
+  opacity: 0.4;
+}

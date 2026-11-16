@@ -1,0 +1,89 @@
+.sb-heading {
+  color: var(--color-text);
+  font-weight: var(--weight-bold);
+}
+
+.sb-heading--title {
+  font-size: var(--text-2xl);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+}
+
+.sb-heading--heading {
+  font-size: var(--text-xl);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-snug);
+}
+
+.sb-heading--subheading {
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-snug);
+}
+
+.sb-text--base {
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+}
+
+.sb-text--md {
+  font-size: var(--text-md);
+  line-height: var(--leading-snug);
+}
+
+.sb-text--sm {
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+}
+
+.sb-text--xs {
+  font-size: var(--text-xs);
+  line-height: var(--leading-snug);
+}
+
+.sb-text--primary {
+  color: var(--color-text);
+}
+
+.sb-text--secondary {
+  color: var(--color-text-secondary);
+}
+
+.sb-text--tertiary {
+  color: var(--color-text-tertiary);
+}
+
+.sb-text--accent {
+  color: var(--color-accent);
+}
+
+.sb-text--warning {
+  color: var(--color-warning);
+}
+
+.sb-text--danger {
+  color: var(--color-danger);
+}
+
+.sb-text--regular {
+  font-weight: var(--weight-regular);
+}
+
+.sb-text--medium {
+  font-weight: var(--weight-medium);
+}
+
+.sb-text--semibold {
+  font-weight: var(--weight-semibold);
+}
+
+.sb-text--bold {
+  font-weight: var(--weight-bold);
+}
+
+.sb-text--truncate {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

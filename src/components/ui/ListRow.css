@@ -1,0 +1,130 @@
+.sb-list-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 52px;
+  padding: var(--space-2) var(--sb-row-pad-x, 0px);
+}
+
+/* Hairline between consecutive rows, aligned with the row padding. */
+.sb-list-row + .sb-list-row::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: var(--sb-row-pad-x, 0px);
+  left: var(--sb-row-pad-x, 0px);
+  height: 1px;
+  background: var(--color-separator);
+  pointer-events: none;
+}
+
+.sb-list-row--label {
+  cursor: pointer;
+}
+
+.sb-list-row__main {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  min-width: 0;
+  padding: var(--space-1) 0;
+  text-align: start;
+}
+
+.sb-list-row__title {
+  font-size: var(--text-base);
+  line-height: var(--leading-snug);
+  overflow-wrap: anywhere;
+}
+
+.sb-list-row__subtitle {
+  color: var(--color-text-secondary);
+  font-size: var(--text-md);
+  line-height: var(--leading-snug);
+  overflow-wrap: anywhere;
+}
+
+.sb-list-row--destructive .sb-list-row__title {
+  color: var(--color-danger);
+}
+
+.sb-list-row__leading,
+.sb-list-row__trailing {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.sb-list-row__leading {
+  color: var(--color-text-secondary);
+}
+
+.sb-list-row__trailing {
+  max-width: 55%;
+  color: var(--color-text-secondary);
+  font-size: var(--text-md);
+  text-align: end;
+}
+
+.sb-list-row__chevron {
+  width: 18px;
+  height: 18px;
+  margin-right: -4px;
+  color: var(--color-text-tertiary);
+}
+
+/*
+ * Pressable row: the main button stretches over the whole row. The slots sit above
+ * it but let presses fall through, except on controls placed inside them.
+ */
+.sb-list-row--interactive .sb-list-row__main {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.sb-list-row--interactive .sb-list-row__main::after {
+  content: '';
+  position: absolute;
+  inset: 0 calc(var(--sb-row-pad-x, 0px) - var(--space-2));
+  border-radius: var(--radius-sm);
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.sb-list-row--interactive .sb-list-row__main:active:not(:disabled)::after {
+  background: var(--glass-fill);
+}
+
+@media (hover: hover) {
+  .sb-list-row--interactive .sb-list-row__main:hover:not(:disabled)::after {
+    background: var(--glass-fill-subtle);
+  }
+}
+
+.sb-list-row--interactive .sb-list-row__main:focus-visible {
+  outline: none;
+}
+
+.sb-list-row--interactive .sb-list-row__main:focus-visible::after {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: -2px;
+}
+
+.sb-list-row--interactive .sb-list-row__main:disabled {
+  opacity: 0.5;
+}
+
+.sb-list-row--interactive .sb-list-row__leading,
+.sb-list-row--interactive .sb-list-row__trailing,
+.sb-list-row--interactive .sb-list-row__chevron {
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.sb-list-row--interactive :is(.sb-list-row__leading, .sb-list-row__trailing) :is(button, a, input, select, label) {
+  pointer-events: auto;
+}

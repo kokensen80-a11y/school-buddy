@@ -1,0 +1,38 @@
+.sb-subject-dot {
+  display: inline-block;
+  flex: none;
+  border-radius: 50%;
+  background: var(--sb-subject-color);
+}
+
+.sb-subject-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  min-height: 28px;
+  padding: 0 10px 0 8px;
+  border-radius: var(--radius-pill);
+  /* Solid fallback first; the tinted fill needs color-mix. */
+  background: var(--glass-fill);
+  background: color-mix(in srgb, var(--sb-subject-color) 18%, rgb(0 0 0 / 0.027));
+  color: var(--color-text);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-tight);
+  vertical-align: middle;
+}
+
+.sb-subject-tag__dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--sb-subject-color);
+}
+
+.sb-subject-tag__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
