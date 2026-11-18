@@ -1,4 +1,5 @@
-import type { CSSProperties, ReactNode } from 'react';
+import { useEffect, useRef, type CSSProperties, type ReactNode } from 'react';
+import { prefersReducedMotion } from './motion';
 import { Badge } from './Badge';
 import { cx } from './cx';
 import './TabBar.css';
@@ -42,7 +43,27 @@ export function TabBar<K extends string = string>({
   className,
 }: TabBarProps<K>) {
   const half = Math.ceil(items.length / 2);
-  const style = { '--sb-tab-count': items.length + (center ? 1 : 0) } as CSSProperties;
+  const activeIndex = items.findIndex((item) => item.key === value);
+  // Grid column of the active tab; the + takes the middle column.
+  const slot = activeIndex < 0 ? -1 : !center || activeIndex < half ? activeIndex : activeIndex + 1;
+  const style = {
+    '--sb-tab-count': items.length + (center ? 1 : 0),
+    '--sb-tab-slot': Math.max(slot, 0),
+  } as CSSProperties;
+
+  // The pill glides to the new tab and stretches a little (12%) while it moves.
+  const pill = useRef<HTMLSpanElement>(null);
+  const previous = useRef(slot);
+  useEffect(() => {
+    const el = pill.current;
+    if (el && previous.current >= 0 && slot >= 0 && previous.current !== slot && !prefersReducedMotion() && typeof el.animate === 'function') {
+      el.animate(
+        [{ transform: 'scaleX(1)' }, { transform: 'scaleX(1.12)', offset: 0.45 }, { transform: 'scaleX(1)' }],
+        { duration: 340, easing: 'cubic-bezier(0.65, 0, 0.35, 1)' },
+      );
+    }
+    previous.current = slot;
+  }, [slot]);
 
   const tab = (item: TabBarItem<K>) => {
     const active = item.key === value;
@@ -71,6 +92,7 @@ export function TabBar<K extends string = string>({
   return (
     <nav className={cx('sb-tab-bar', className)} aria-label={ariaLabel}>
       <div className="sb-tab-bar__inner" style={style}>
+        {slot >= 0 && <span ref={pill} className="sb-tab-bar__pill" aria-hidden="true" />}
         {items.slice(0, half).map(tab)}
         {center && (
           <div className="sb-tab-bar__center-slot">

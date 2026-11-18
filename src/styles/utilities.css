@@ -72,15 +72,15 @@
 @keyframes sb-rise-in {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(16px) scale(0.97);
   }
 }
 
 :is(.sb-bento, .sb-xday__cards, .sb-card--pad-none, .sb-bento__list) > * {
-  animation: sb-rise-in 260ms var(--ease-out) both;
+  animation: sb-rise-in 380ms var(--ease-out) both;
 }
 
-:is(.sb-bento, .sb-xday__cards, .sb-card--pad-none, .sb-bento__list) > :nth-child(2) { animation-delay: 30ms; }
+:is(.sb-bento, .sb-xday__cards, .sb-card--pad-none, .sb-bento__list) > :nth-child(2) { animation-delay: 40ms; }
 :is(.sb-bento, .sb-xday__cards, .sb-card--pad-none, .sb-bento__list) > :nth-child(3) { animation-delay: 60ms; }
 :is(.sb-bento, .sb-xday__cards, .sb-card--pad-none, .sb-bento__list) > :nth-child(4) { animation-delay: 90ms; }
 :is(.sb-bento, .sb-xday__cards, .sb-card--pad-none, .sb-bento__list) > :nth-child(5) { animation-delay: 120ms; }
@@ -91,6 +91,40 @@
 
 @media (prefers-reduced-motion: reduce) {
   :is(.sb-bento, .sb-xday__cards, .sb-card--pad-none, .sb-bento__list) > * {
+    animation: none;
+  }
+}
+
+/*
+ * Screen changes. A tab screen fades and settles in; a detail screen (with a back button)
+ * comes in from the right, the side it is opened towards. Only the entrance is animated,
+ * so the fill mode is "backwards": after the animation no transform stays behind.
+ */
+@keyframes sb-screen-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+}
+
+@keyframes sb-screen-push {
+  from {
+    opacity: 0;
+    transform: translateX(32px);
+  }
+}
+
+.sb-screen__scroll {
+  animation: sb-screen-in 320ms var(--ease-out) backwards;
+}
+
+.sb-screen--top-bar .sb-screen__scroll {
+  animation: sb-screen-push 340ms var(--ease-out) backwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sb-screen__scroll,
+  .sb-screen--top-bar .sb-screen__scroll {
     animation: none;
   }
 }
