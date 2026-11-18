@@ -103,3 +103,56 @@
   align-self: flex-start;
   margin-top: calc(var(--space-4) * -1);
 }
+
+/* ───────── Agenda motion ───────── */
+
+/* A new month slides in from the side you went to; the first view rises in row by row. */
+.sb-cal__grid--next {
+  animation: sb-slide-next 340ms var(--ease-out);
+}
+
+.sb-cal__grid--prev {
+  animation: sb-slide-prev 340ms var(--ease-out);
+}
+
+.sb-cal__grid--none .sb-cal__row {
+  animation: sb-rise-in 380ms var(--ease-out) backwards;
+}
+
+.sb-cal__grid--none .sb-cal__row:nth-child(2) { animation-delay: 30ms; }
+.sb-cal__grid--none .sb-cal__row:nth-child(3) { animation-delay: 60ms; }
+.sb-cal__grid--none .sb-cal__row:nth-child(4) { animation-delay: 90ms; }
+.sb-cal__grid--none .sb-cal__row:nth-child(5) { animation-delay: 120ms; }
+.sb-cal__grid--none .sb-cal__row:nth-child(6) { animation-delay: 150ms; }
+
+/* The chosen day pops; today's ring breathes. */
+.sb-cal__day.is-selected .sb-cal__num {
+  animation: sb-pop-in 300ms var(--ease-out);
+}
+
+.sb-cal__day.is-today:not(.is-selected) .sb-cal__num {
+  --sb-breathe-color: rgb(255 255 255 / 0.4);
+  animation: sb-breathe 2.4s var(--ease-out) infinite;
+}
+
+/* Exam dots and block marks pop in under the days. */
+.sb-cal__marks > * {
+  animation: sb-pop-in 320ms var(--ease-out) 200ms backwards;
+}
+
+.sb-cal__day {
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.sb-cal__day:active {
+  transform: scale(0.97);
+}
+
+/* The details of the chosen day come in again whenever you pick another day. */
+.sb-agenda-day > * {
+  animation: sb-rise-in 360ms var(--ease-out) backwards;
+}
+
+.sb-agenda-day > :nth-child(2) { animation-delay: 40ms; }
+.sb-agenda-day > :nth-child(3) { animation-delay: 80ms; }
+.sb-agenda-day > :nth-child(4) { animation-delay: 120ms; }

@@ -92,7 +92,11 @@ export function TabBar<K extends string = string>({
   return (
     <nav className={cx('sb-tab-bar', className)} aria-label={ariaLabel}>
       <div className="sb-tab-bar__inner" style={style}>
-        {slot >= 0 && <span ref={pill} className="sb-tab-bar__pill" aria-hidden="true" />}
+        {slot >= 0 && (
+          <span className="sb-tab-bar__pill" aria-hidden="true">
+            <span ref={pill} className="sb-tab-bar__pill-shape" />
+          </span>
+        )}
         {items.slice(0, half).map(tab)}
         {center && (
           <div className="sb-tab-bar__center-slot">

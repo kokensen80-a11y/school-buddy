@@ -108,7 +108,11 @@ export default function AgendaScreen({ date }: { date?: ISODate }) {
     <Screen withTabBar>
       <LargeHeader
         title="Agenda"
-        subtitle={formatMonthYear(month)}
+        subtitle={
+          <span key={month} className="sb-swap">
+            {formatMonthYear(month)}
+          </span>
+        }
         trailing={
           <GlassPill>
             <IconButton variant="plain" aria-label="Vorige maand" onClick={() => setMonth(addMonths(month, -1))}>
@@ -144,7 +148,7 @@ export default function AgendaScreen({ date }: { date?: ISODate }) {
           </Button>
         )}
 
-        <Stack gap={4}>
+        <Stack gap={4} key={selected} className="sb-agenda-day">
           <Stack gap={1}>
             <Heading level={2} size="heading">
               {formatDateLong(selected, today)}
@@ -245,6 +249,12 @@ function MonthCalendar({
 }) {
   const weeks = monthGrid(month);
   const gridRef = useRef<HTMLDivElement>(null);
+  // Which way the month changed, so the new month slides in from that side.
+  const shownMonth = useRef(month);
+  const direction = month > shownMonth.current ? 'next' : month < shownMonth.current ? 'prev' : 'none';
+  useEffect(() => {
+    shownMonth.current = month;
+  }, [month]);
   const swipe = useRef<{ x: number; y: number } | null>(null);
   const focusTarget = isSameMonth(selected, month) ? selected : month;
 
@@ -277,7 +287,7 @@ function MonthCalendar({
           <span key={d}>{d}</span>
         ))}
       </div>
-      <div role="grid" aria-label={formatMonthYear(month)}>
+      <div role="grid" aria-label={formatMonthYear(month)} key={month} className={`sb-cal__grid sb-cal__grid--${direction}`}>
         {weeks.map((week) => (
           <div role="row" className="sb-cal__row" key={week[0]}>
             {week.map((d) => {

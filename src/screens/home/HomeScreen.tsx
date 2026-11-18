@@ -2,6 +2,7 @@ import { Bell, GraduationCap } from 'lucide-react';
 import {
   Button,
   Card,
+  CountUp,
   EmptyState,
   IconButton,
   LargeHeader,
@@ -123,8 +124,8 @@ export default function HomeScreen() {
 
         <StatCard tall value={doneMinutes > 0 ? formatDuration(doneMinutes) : '0 min'} label="leertijd in totaal" emoji="📚" />
         <div className="sb-bento__stack">
-          <StatCard value={doneAll.length} label={doneAll.length === 1 ? 'blok gedaan' : 'blokken gedaan'} emoji="✅" />
-          <StatCard value={`${streak} ${streak === 1 ? 'dag' : 'dagen'}`} label="op rij" emoji="🔥" />
+          <StatCard value={<CountUp value={doneAll.length} />} label={doneAll.length === 1 ? 'blok gedaan' : 'blokken gedaan'} emoji="✅" />
+          <StatCard value={<><CountUp value={streak} /> {streak === 1 ? 'dag' : 'dagen'}</>} label="op rij" emoji="🔥" />
         </div>
 
         <WeekChart today={today} />

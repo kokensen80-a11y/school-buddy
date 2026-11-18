@@ -57,3 +57,25 @@
   font-variant-numeric: tabular-nums;
   line-height: 1;
 }
+
+/* The arc draws itself in from the top when the ring appears. */
+@keyframes sb-ring-draw {
+  from {
+    stroke-dashoffset: var(--sb-ring-length);
+  }
+}
+
+.sb-progress-ring__arc {
+  animation: sb-ring-draw 900ms var(--ease-out) 150ms backwards;
+}
+
+/* The bar grows in from the left when it appears. */
+@keyframes sb-bar-grow {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+.sb-progress-bar__fill {
+  animation: sb-bar-grow 800ms var(--ease-out) 150ms backwards;
+}

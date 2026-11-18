@@ -59,13 +59,22 @@
   position: absolute;
   top: 6px;
   bottom: 6px;
-  left: calc(6px + var(--sb-tab-slot) * (var(--sb-col) + 4px));
+  left: 6px;
   width: var(--sb-col);
+  /* Moves with transform only (no layout work), so it stays smooth. */
+  transform: translateX(calc(var(--sb-tab-slot) * (100% + 4px)));
+  transition: transform 360ms var(--ease-in-out);
+  pointer-events: none;
+}
+
+/* The visible pill; it stretches while its parent glides. */
+.sb-tab-bar__pill-shape {
+  display: block;
+  width: 100%;
+  height: 100%;
   border-radius: var(--radius-pill);
   background: rgb(255 255 255 / 0.16);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.14);
-  transition: left 340ms var(--ease-in-out);
-  pointer-events: none;
 }
 
 .sb-tab-bar__tab,

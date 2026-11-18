@@ -93,6 +93,7 @@ export function ProgressRing({
           strokeWidth={thickness}
           strokeDasharray={circumference}
           strokeDashoffset={circumference * (1 - fraction)}
+          style={{ '--sb-ring-length': `${circumference}px` } as CSSProperties}
         />
       </svg>
       {children != null && <span className="sb-progress-ring__label">{children}</span>}

@@ -73,3 +73,4 @@ export { Skeleton, type SkeletonProps } from './Skeleton';
 export { Heading, Text, type HeadingProps, type TextProps } from './Typography';
 export { Stack, type StackProps } from './Stack';
 export { resolveColor, type ColorValue } from './color';
+export { CountUp } from './CountUp';

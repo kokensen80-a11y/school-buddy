@@ -88,3 +88,14 @@
   height: 6px;
   border-radius: var(--radius-pill);
 }
+
+/* Ticking a block off fades its title instead of jumping. */
+.sb-session__title span {
+  transition:
+    color var(--duration-slow) var(--ease-out),
+    opacity var(--duration-slow) var(--ease-out);
+}
+
+.sb-session {
+  transition: opacity var(--duration-slow) var(--ease-out);
+}

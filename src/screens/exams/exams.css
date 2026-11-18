@@ -206,8 +206,7 @@
       color-mix(in srgb, var(--xcard-color) 34%, transparent) 100%
     ),
     rgb(8 12 32 / 0.22);
-  -webkit-backdrop-filter: blur(24px) saturate(170%);
-  backdrop-filter: blur(24px) saturate(170%);
+
   color: #fff;
   font: inherit;
   text-align: left;
@@ -267,8 +266,7 @@
 .sb-xcard__badge--glass {
   border: 1px solid rgb(255 255 255 / 0.22);
   background: rgb(255 255 255 / 0.14);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+
   font-weight: 600;
 }
 
@@ -379,8 +377,7 @@
   border-radius: 12px;
   background: rgb(0 0 0 / 0.2);
   border: 1px solid rgb(255 255 255 / 0.14);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
+
 }
 
 .sb-xcard__dot {
@@ -433,4 +430,52 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+/* ───────── Exams motion ───────── */
+
+/* The status dot breathes: calm when on schedule, clearer when something needs you. */
+.sb-xcard__dot {
+  --sb-breathe-color: rgb(255 255 255 / 0.35);
+  animation: sb-breathe 2.8s var(--ease-out) 800ms infinite;
+}
+
+.sb-xcard__dot--warn {
+  --sb-breathe-color: rgb(255 159 28 / 0.7);
+  animation-duration: 1.8s;
+}
+
+.sb-xcard__dot--bad {
+  --sb-breathe-color: rgb(255 77 109 / 0.75);
+  animation-duration: 1.6s;
+}
+
+/* The big icon on the card drifts slowly. */
+.sb-xcard__art {
+  animation: sb-float 5s var(--ease-in-out) infinite alternate;
+}
+
+/* The arrow between the times nudges once when the card arrives. */
+@keyframes sb-nudge {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(4px);
+  }
+}
+
+.sb-xcard__time svg {
+  animation: sb-nudge 600ms var(--ease-in-out) 500ms 2;
+}
+
+/* The photo card's camera button and the file rows pop in. */
+.sb-scan__icon {
+  animation: sb-pop-in 380ms var(--ease-out) 120ms backwards;
+}
+
+.sb-file {
+  animation: sb-rise-in 340ms var(--ease-out) backwards;
 }

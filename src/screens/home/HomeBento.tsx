@@ -1,5 +1,6 @@
 import type { CSSProperties, ReactNode } from 'react';
 import { Check } from 'lucide-react';
+import { CountUp } from '../../components/ui';
 import { useExams, useSessions, useSubjects } from '../../lib/store';
 import { formatDateLong, formatDateShort, formatDuration, formatRelative } from '../../lib/date';
 import { examRatio, subjectMap, weekLoad } from '../../lib/selectors';
@@ -8,10 +9,20 @@ import type { ISODate, StudySession } from '../../types';
 
 const DAY_LETTERS = ['M', 'D', 'W', 'D', 'V', 'Z', 'Z'];
 
-/** Minutes as a big number and a small unit: 45 → ["45", "min"], 160 → ["2,7", "uur"]. */
-function bigTime(minutes: number): [string, string] {
-  if (minutes < 100) return [String(minutes), 'min'];
-  return [(minutes / 60).toFixed(1).replace('.', ',').replace(',0', ''), 'uur'];
+/** Minutes as a big number and a small unit; under 100 the minutes count up. */
+function BigTime({ minutes }: { minutes: number }) {
+  if (minutes < 100) {
+    return (
+      <>
+        <CountUp value={minutes} /> <small>min</small>
+      </>
+    );
+  }
+  return (
+    <>
+      {(minutes / 60).toFixed(1).replace('.', ',').replace(',0', '')} <small>uur</small>
+    </>
+  );
 }
 
 /** Seven rounded squares; done days are filled with a tick, today has a ring. */
@@ -53,11 +64,10 @@ export function TimeTiles({ today }: { today: ISODate }) {
       </h2>
       <div className="sb-tiles">
         {tiles.map((t) => {
-          const [num, unit] = bigTime(t.minutes);
           return (
             <div key={t.label} className="sb-tile" style={{ '--tile-color': t.color } as CSSProperties}>
               <span className="sb-tile__num">
-                {num} <small>{unit}</small>
+                <BigTime minutes={t.minutes} />
               </span>
               <span className="sb-tile__label">{t.label}</span>
             </div>

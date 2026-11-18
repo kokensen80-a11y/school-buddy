@@ -305,8 +305,6 @@
   background:
     linear-gradient(140deg, color-mix(in srgb, var(--banner-color) 62%, transparent) 0%, color-mix(in srgb, var(--banner-color) 30%, transparent) 100%),
     rgb(8 12 32 / 0.2);
-  -webkit-backdrop-filter: blur(22px) saturate(170%);
-  backdrop-filter: blur(22px) saturate(170%);
   color: #fff;
   font: inherit;
   text-align: left;
@@ -369,4 +367,51 @@
   gap: 5px;
   font-size: 14px;
   white-space: nowrap;
+}
+
+/* ───────── Home motion ───────── */
+
+/* Bars grow up from the axis, one day after another. */
+.sb-chart__planned,
+.sb-chart__done {
+  transform-origin: bottom;
+  animation: sb-grow-y 700ms var(--ease-out) backwards;
+}
+
+.sb-chart__col:nth-child(1) span { animation-delay: 200ms; }
+.sb-chart__col:nth-child(2) span { animation-delay: 240ms; }
+.sb-chart__col:nth-child(3) span { animation-delay: 280ms; }
+.sb-chart__col:nth-child(4) span { animation-delay: 320ms; }
+.sb-chart__col:nth-child(5) span { animation-delay: 360ms; }
+.sb-chart__col:nth-child(6) span { animation-delay: 400ms; }
+.sb-chart__col:nth-child(7) span { animation-delay: 440ms; }
+
+.sb-chart__day {
+  animation: none;
+}
+
+/* The pictures float gently. */
+.sb-stat__emoji,
+.sb-banner__emoji {
+  animation: sb-float 3.2s var(--ease-in-out) infinite alternate;
+}
+
+.sb-stat__emoji--big {
+  animation-duration: 4s;
+}
+
+.sb-banner__emoji {
+  --sb-float-tilt: -8deg;
+  animation-duration: 3.6s;
+}
+
+/* Today's square breathes softly. */
+.sb-ticks__day.is-today {
+  --sb-breathe-color: rgb(255 255 255 / 0.45);
+  animation: sb-pop-in 360ms var(--ease-out) backwards, sb-breathe 2.4s var(--ease-out) 600ms infinite;
+}
+
+/* A finished block's dot pops; open blocks wait quietly. */
+.sb-dots__dot.is-done {
+  animation: sb-pop-in 420ms var(--ease-out) backwards;
 }

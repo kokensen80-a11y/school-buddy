@@ -38,6 +38,15 @@ function useHiddenWarnings(accountId: ID | undefined) {
 export function PlanWarnings({ examId, dismissible = false }: { examId?: ID; dismissible?: boolean }) {
   const account = useAccount();
   const { hidden, hide } = useHiddenWarnings(account?.id);
+  // Warnings that are animating out after the cross was pressed.
+  const [leaving, setLeaving] = useState<string[]>([]);
+  const close = (key: string) => {
+    setLeaving((l) => [...l, key]);
+    window.setTimeout(() => {
+      hide(key);
+      setLeaving((l) => l.filter((k) => k !== key));
+    }, 200);
+  };
   const warnings = useWarnings()
     .filter((w) => !examId || w.examId === examId)
     .filter((w) => !dismissible || !hidden.includes(keyOf(w)));
@@ -52,7 +61,8 @@ export function PlanWarnings({ examId, dismissible = false }: { examId?: ID; dis
             key={keyOf(w)}
             tone="warning"
             title={text.title}
-            onDismiss={dismissible ? () => hide(keyOf(w)) : undefined}
+            className={leaving.includes(keyOf(w)) ? 'sb-leaving' : undefined}
+            onDismiss={dismissible ? () => close(keyOf(w)) : undefined}
             action={
               w.type === 'te-weinig-tijd' ? (
                 <Button size="sm" variant="secondary" onClick={() => navigate({ name: 'voorkeuren' })}>

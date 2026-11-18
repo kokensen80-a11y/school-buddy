@@ -65,66 +65,203 @@
   border: 0;
 }
 
-/*
- * Entrances: content rises in with ease out, list items staggered by 30ms so the
- * screen settles from top to bottom instead of popping in at once.
+/* ───────────────────────── Motion ─────────────────────────
+ * One system for the whole app. Only transform and opacity move, so it stays smooth.
+ *   Screens   a tab screen fades and settles; a detail screen comes in from the right.
+ *   Sections  the parts of a screen rise in one after another (40ms apart).
+ *   Lists     rows, tiles and cards rise in 30ms apart.
+ *   Small     week squares, dots, chips and badges pop in.
+ * Everything is off when the phone asks for less motion.
  */
-@keyframes sb-rise-in {
-  from {
-    opacity: 0;
-    transform: translateY(16px) scale(0.97);
-  }
-}
 
-:is(.sb-bento, .sb-xday__cards, .sb-card--pad-none, .sb-bento__list) > * {
-  animation: sb-rise-in 380ms var(--ease-out) both;
-}
-
-:is(.sb-bento, .sb-xday__cards, .sb-card--pad-none, .sb-bento__list) > :nth-child(2) { animation-delay: 40ms; }
-:is(.sb-bento, .sb-xday__cards, .sb-card--pad-none, .sb-bento__list) > :nth-child(3) { animation-delay: 60ms; }
-:is(.sb-bento, .sb-xday__cards, .sb-card--pad-none, .sb-bento__list) > :nth-child(4) { animation-delay: 90ms; }
-:is(.sb-bento, .sb-xday__cards, .sb-card--pad-none, .sb-bento__list) > :nth-child(5) { animation-delay: 120ms; }
-:is(.sb-bento, .sb-xday__cards, .sb-card--pad-none, .sb-bento__list) > :nth-child(6) { animation-delay: 150ms; }
-:is(.sb-bento, .sb-xday__cards, .sb-card--pad-none, .sb-bento__list) > :nth-child(7) { animation-delay: 180ms; }
-:is(.sb-bento, .sb-xday__cards, .sb-card--pad-none, .sb-bento__list) > :nth-child(8) { animation-delay: 210ms; }
-:is(.sb-bento, .sb-xday__cards, .sb-card--pad-none, .sb-bento__list) > :nth-child(n + 9) { animation-delay: 240ms; }
-
-@media (prefers-reduced-motion: reduce) {
-  :is(.sb-bento, .sb-xday__cards, .sb-card--pad-none, .sb-bento__list) > * {
-    animation: none;
-  }
-}
-
-/*
- * Screen changes. A tab screen fades and settles in; a detail screen (with a back button)
- * comes in from the right, the side it is opened towards. Only the entrance is animated,
- * so the fill mode is "backwards": after the animation no transform stays behind.
- */
 @keyframes sb-screen-in {
   from {
     opacity: 0;
-    transform: translateY(10px) scale(0.985);
+    transform: translateY(12px) scale(0.985);
   }
 }
 
 @keyframes sb-screen-push {
   from {
     opacity: 0;
-    transform: translateX(32px);
+    transform: translateX(40px);
   }
 }
 
+@keyframes sb-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.97);
+  }
+}
+
+@keyframes sb-pop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+
+  65% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes sb-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes sb-swap-in {
+  from {
+    opacity: 0;
+    filter: blur(3px);
+    transform: translateY(6px);
+  }
+}
+
+@keyframes sb-grow-y {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+@keyframes sb-float {
+  from {
+    transform: translateY(0) rotate(var(--sb-float-tilt, 0deg));
+  }
+
+  to {
+    transform: translateY(-7px) rotate(calc(var(--sb-float-tilt, 0deg) + 3deg));
+  }
+}
+
+@keyframes sb-breathe {
+  0% {
+    box-shadow: 0 0 0 0 var(--sb-breathe-color, rgb(255 255 255 / 0.5));
+  }
+
+  70%,
+  100% {
+    box-shadow: 0 0 0 9px transparent;
+  }
+}
+
+@keyframes sb-leave {
+  to {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+}
+
+@keyframes sb-slide-next {
+  from {
+    opacity: 0;
+    transform: translateX(36px);
+  }
+}
+
+@keyframes sb-slide-prev {
+  from {
+    opacity: 0;
+    transform: translateX(-36px);
+  }
+}
+
+/* Screens */
 .sb-screen__scroll {
-  animation: sb-screen-in 320ms var(--ease-out) backwards;
+  animation: sb-screen-in 340ms var(--ease-out) backwards;
 }
 
 .sb-screen--top-bar .sb-screen__scroll {
-  animation: sb-screen-push 340ms var(--ease-out) backwards;
+  animation: sb-screen-push 360ms var(--ease-out) backwards;
+}
+
+.sb-screen__top {
+  animation: sb-fade-in 300ms var(--ease-out) backwards;
+}
+
+/* Sections of a screen */
+.sb-screen__content > *,
+.sb-screen__content > .sb-stack > * {
+  animation: sb-rise-in 420ms var(--ease-out) backwards;
+}
+
+:is(.sb-screen__content, .sb-screen__content > .sb-stack) > :nth-child(2) { animation-delay: 40ms; }
+:is(.sb-screen__content, .sb-screen__content > .sb-stack) > :nth-child(3) { animation-delay: 80ms; }
+:is(.sb-screen__content, .sb-screen__content > .sb-stack) > :nth-child(4) { animation-delay: 120ms; }
+:is(.sb-screen__content, .sb-screen__content > .sb-stack) > :nth-child(5) { animation-delay: 160ms; }
+:is(.sb-screen__content, .sb-screen__content > .sb-stack) > :nth-child(6) { animation-delay: 200ms; }
+:is(.sb-screen__content, .sb-screen__content > .sb-stack) > :nth-child(7) { animation-delay: 240ms; }
+:is(.sb-screen__content, .sb-screen__content > .sb-stack) > :nth-child(8) { animation-delay: 280ms; }
+:is(.sb-screen__content, .sb-screen__content > .sb-stack) > :nth-child(n + 9) { animation-delay: 320ms; }
+
+/* Lists, tiles and cards */
+:is(.sb-stagger, .sb-bento, .sb-xday__cards, .sb-card--pad-none, .sb-bento__list, .sb-exam-form, .sb-sheet__body, .sb-action-tile-row, .sb-stack--column) > * {
+  animation: sb-rise-in 380ms var(--ease-out) backwards;
+}
+
+:is(.sb-stagger, .sb-bento, .sb-xday__cards, .sb-card--pad-none, .sb-bento__list, .sb-exam-form, .sb-sheet__body, .sb-action-tile-row, .sb-stack--column) > :nth-child(2) { animation-delay: 30ms; }
+:is(.sb-stagger, .sb-bento, .sb-xday__cards, .sb-card--pad-none, .sb-bento__list, .sb-exam-form, .sb-sheet__body, .sb-action-tile-row, .sb-stack--column) > :nth-child(3) { animation-delay: 60ms; }
+:is(.sb-stagger, .sb-bento, .sb-xday__cards, .sb-card--pad-none, .sb-bento__list, .sb-exam-form, .sb-sheet__body, .sb-action-tile-row, .sb-stack--column) > :nth-child(4) { animation-delay: 90ms; }
+:is(.sb-stagger, .sb-bento, .sb-xday__cards, .sb-card--pad-none, .sb-bento__list, .sb-exam-form, .sb-sheet__body, .sb-action-tile-row, .sb-stack--column) > :nth-child(5) { animation-delay: 120ms; }
+:is(.sb-stagger, .sb-bento, .sb-xday__cards, .sb-card--pad-none, .sb-bento__list, .sb-exam-form, .sb-sheet__body, .sb-action-tile-row, .sb-stack--column) > :nth-child(6) { animation-delay: 150ms; }
+:is(.sb-stagger, .sb-bento, .sb-xday__cards, .sb-card--pad-none, .sb-bento__list, .sb-exam-form, .sb-sheet__body, .sb-action-tile-row, .sb-stack--column) > :nth-child(7) { animation-delay: 180ms; }
+:is(.sb-stagger, .sb-bento, .sb-xday__cards, .sb-card--pad-none, .sb-bento__list, .sb-exam-form, .sb-sheet__body, .sb-action-tile-row, .sb-stack--column) > :nth-child(8) { animation-delay: 210ms; }
+:is(.sb-stagger, .sb-bento, .sb-xday__cards, .sb-card--pad-none, .sb-bento__list, .sb-exam-form, .sb-sheet__body, .sb-action-tile-row, .sb-stack--column) > :nth-child(9) { animation-delay: 240ms; }
+:is(.sb-stagger, .sb-bento, .sb-xday__cards, .sb-card--pad-none, .sb-bento__list, .sb-exam-form, .sb-sheet__body, .sb-action-tile-row, .sb-stack--column) > :nth-child(10) { animation-delay: 270ms; }
+:is(.sb-stagger, .sb-bento, .sb-xday__cards, .sb-card--pad-none, .sb-bento__list, .sb-exam-form, .sb-sheet__body, .sb-action-tile-row, .sb-stack--column) > :nth-child(11) { animation-delay: 300ms; }
+:is(.sb-stagger, .sb-bento, .sb-xday__cards, .sb-card--pad-none, .sb-bento__list, .sb-exam-form, .sb-sheet__body, .sb-action-tile-row, .sb-stack--column) > :nth-child(12) { animation-delay: 330ms; }
+:is(.sb-stagger, .sb-bento, .sb-xday__cards, .sb-card--pad-none, .sb-bento__list, .sb-exam-form, .sb-sheet__body, .sb-action-tile-row, .sb-stack--column) > :nth-child(n + 13) { animation-delay: 360ms; }
+
+/* Small things pop */
+:is(.sb-ticks, .sb-dots, .sb-tiles, .sb-exam-subjects, .sb-exam-photos, .sb-xcard__badges) > * {
+  animation: sb-pop-in 360ms var(--ease-out) backwards;
+}
+
+:is(.sb-ticks, .sb-dots, .sb-tiles, .sb-exam-subjects, .sb-exam-photos, .sb-xcard__badges) > :nth-child(2) { animation-delay: 35ms; }
+:is(.sb-ticks, .sb-dots, .sb-tiles, .sb-exam-subjects, .sb-exam-photos, .sb-xcard__badges) > :nth-child(3) { animation-delay: 70ms; }
+:is(.sb-ticks, .sb-dots, .sb-tiles, .sb-exam-subjects, .sb-exam-photos, .sb-xcard__badges) > :nth-child(4) { animation-delay: 105ms; }
+:is(.sb-ticks, .sb-dots, .sb-tiles, .sb-exam-subjects, .sb-exam-photos, .sb-xcard__badges) > :nth-child(5) { animation-delay: 140ms; }
+:is(.sb-ticks, .sb-dots, .sb-tiles, .sb-exam-subjects, .sb-exam-photos, .sb-xcard__badges) > :nth-child(6) { animation-delay: 175ms; }
+:is(.sb-ticks, .sb-dots, .sb-tiles, .sb-exam-subjects, .sb-exam-photos, .sb-xcard__badges) > :nth-child(7) { animation-delay: 210ms; }
+:is(.sb-ticks, .sb-dots, .sb-tiles, .sb-exam-subjects, .sb-exam-photos, .sb-xcard__badges) > :nth-child(8) { animation-delay: 245ms; }
+:is(.sb-ticks, .sb-dots, .sb-tiles, .sb-exam-subjects, .sb-exam-photos, .sb-xcard__badges) > :nth-child(n + 9) { animation-delay: 280ms; }
+
+/* Swapped text (month name, counts) blurs and settles in. */
+.sb-swap {
+  display: inline-block;
+  animation: sb-swap-in 300ms var(--ease-out);
+}
+
+/* Badges pop when they appear. */
+.sb-badge {
+  animation: sb-pop-in 320ms var(--ease-out);
+}
+
+/* A selected choice chip gives a small pop. */
+.sb-choice-chip--selected {
+  animation: sb-pop-in 280ms var(--ease-out);
+}
+
+/* Something that is being removed (a closed warning). */
+.sb-leaving {
+  animation: sb-leave 200ms var(--ease-in) forwards;
+  pointer-events: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sb-screen__scroll,
-  .sb-screen--top-bar .sb-screen__scroll {
-    animation: none;
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
   }
 }
