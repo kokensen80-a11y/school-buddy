@@ -1,95 +1,340 @@
-.sb-home-summary {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
+/* ───────── Home: a dashboard of tiles ───────── */
+
+.sb-home-header .sb-large-header__title {
+  font-size: 28px;
 }
 
-.sb-home-summary__pct {
-  font-size: var(--text-sm);
-  font-weight: var(--weight-semibold);
+.sb-bento {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
 }
 
-.sb-streak {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  height: 36px;
-  padding: 0 12px 0 10px;
-  border-radius: var(--radius-pill);
-  background: #fff;
+.sb-bento:empty {
+  display: none;
+}
+
+.sb-bento__span {
+  grid-column: 1 / -1;
+}
+
+.sb-bento__span:empty {
+  display: none;
+}
+
+.sb-bento__card {
+  min-width: 0;
+  padding: 20px;
+  border-radius: var(--radius-card);
+  background: var(--color-surface-raised);
   box-shadow: var(--shadow-card);
-  font-weight: 800;
+}
+
+.sb-bento__stack {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+
+.sb-bento__title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.sb-bento__title--center {
+  text-align: center;
+}
+
+.sb-bento__sub {
+  margin: 4px 0 0;
+  color: var(--color-text-secondary);
   font-size: 15px;
+  line-height: 1.35;
 }
 
-.sb-streak svg {
-  color: #ff7a1a;
-  fill: #ffb21a;
+.sb-bento__list {
+  margin: 12px -20px -8px;
 }
 
-.sb-weekchecks {
+/* Week: seven rounded squares */
+.sb-ticks {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 4px;
-  margin: calc(var(--space-2) * -1) 0 var(--space-2);
+  gap: 6px;
+  padding: 12px;
+  border-radius: var(--radius-pill);
 }
 
-.sb-weekchecks__day {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 0 6px;
-  border: 1px solid transparent;
+.sb-ticks__day {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border: 0;
   border-radius: 14px;
-  background: none;
-  color: rgb(0 0 0 / 0.45);
+  background: #f3f2ee;
+  color: var(--color-text);
   font: inherit;
+  font-size: 15px;
+  font-weight: 600;
   cursor: pointer;
 }
 
-.sb-weekchecks__day.is-today {
-  border-color: rgb(0 0 0 / 0.08);
-  background: #fff;
-  color: var(--color-text);
-  box-shadow: var(--shadow-card);
+.sb-ticks__day.is-today {
+  box-shadow: inset 0 0 0 2px var(--tile-navy);
 }
 
-.sb-weekchecks__name {
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: capitalize;
-}
-
-.sb-weekchecks__mark {
-  display: grid;
-  place-items: center;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  font-size: 15px;
-  font-weight: 600;
-  color: inherit;
-}
-
-.sb-weekchecks__day.is-done .sb-weekchecks__mark {
-  background: var(--brand-gradient);
+.sb-ticks__day.is-done {
+  background: var(--tile-navy);
   color: #fff;
 }
 
-.sb-weekchecks__exam {
-  width: 6px;
-  height: 6px;
+/* Today's blocks as circles */
+.sb-dots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.sb-dots__dot {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1.5px dashed rgb(0 0 0 / 0.28);
   border-radius: 50%;
+  color: rgb(0 0 0 / 0.45);
+  font-size: 15px;
+  font-weight: 600;
 }
 
-/* The greeting sits between the streak and the bell, so it is a little smaller. */
-.sb-home-header {
-  padding-left: 72px;
-  padding-right: 72px;
+.sb-dots__dot.is-done {
+  border: 0;
+  background: radial-gradient(circle at 35% 30%, #ffe08a 0%, var(--tile-yellow) 70%);
+  color: #6b4b00;
 }
 
-.sb-home-header .sb-large-header__title {
-  font-size: 24px;
-  line-height: 44px;
+/* Three coloured time tiles */
+.sb-tiles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.sb-tile {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 120px;
+  padding: 14px 12px;
+  border-radius: 20px;
+  color: #fff;
+}
+
+.sb-tile__num {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.sb-tile__num small {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.sb-tile__label {
+  font-size: 15px;
+  font-weight: 500;
+  opacity: 0.92;
+}
+
+/* Stat cards with a big number and an emoji as illustration */
+.sb-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sb-stat--tall {
+  justify-content: space-between;
+}
+
+.sb-stat__value {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+}
+
+.sb-stat__label {
+  color: var(--color-text-secondary);
+  font-size: 15px;
+}
+
+.sb-stat__emoji {
+  margin-bottom: 10px;
+  font-size: 30px;
+  line-height: 1;
+}
+
+.sb-stat__emoji--big {
+  align-self: center;
+  margin: 18px 0 0;
+  font-size: 84px;
+  filter: drop-shadow(0 10px 14px rgb(0 0 0 / 0.12));
+}
+
+/* Week chart */
+.sb-chart {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.sb-chart__axis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 150px;
+  color: var(--color-text-tertiary);
+  font-size: 13px;
+  text-align: right;
+}
+
+.sb-chart__bars {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  border-left: 1px solid var(--color-separator);
+  padding-left: 6px;
+}
+
+.sb-chart__col {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+}
+
+.sb-chart__bar {
+  position: relative;
+  height: 150px;
+}
+
+.sb-chart__planned,
+.sb-chart__done {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: 6px 6px 2px 2px;
+}
+
+.sb-chart__planned {
+  background: var(--tile-blue-soft);
+}
+
+.sb-chart__done {
+  background: var(--tile-blue);
+}
+
+.sb-chart__day {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  text-align: center;
+}
+
+.sb-chart__col.is-today .sb-chart__day {
+  color: var(--color-text);
+  font-weight: 700;
+}
+
+.sb-chart__legend {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 12px;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+}
+
+.sb-chart__legend i {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 4px;
+  border-radius: 3px;
+  vertical-align: -1px;
+}
+
+.sb-chart__legend .is-planned { background: var(--tile-blue-soft); }
+.sb-chart__legend .is-done { background: var(--tile-blue); }
+
+/* Next exam banner */
+.sb-banner {
+  --banner-color: var(--tile-purple);
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 150px;
+  padding: 22px 20px;
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--radius-card);
+  background: linear-gradient(140deg, color-mix(in srgb, var(--banner-color) 78%, #fff) 0%, var(--banner-color) 100%);
+  color: #fff;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 16px 30px -20px var(--banner-color);
+}
+
+.sb-banner:active {
+  transform: scale(0.985);
+}
+
+.sb-banner__text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.sb-banner__kicker {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.sb-banner__title {
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.sb-banner__body {
+  font-size: 15px;
+  line-height: 1.35;
+  opacity: 0.9;
+}
+
+.sb-banner__emoji {
+  flex: none;
+  font-size: 64px;
+  line-height: 1;
+  transform: rotate(-8deg);
+  filter: drop-shadow(0 10px 14px rgb(0 0 0 / 0.18));
 }

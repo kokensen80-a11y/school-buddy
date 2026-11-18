@@ -7,9 +7,9 @@
   color-scheme: light;
 
   /* ── Colour: background layers ─────────────────────────────── */
-  --color-bg: #f2f2f6;
+  --color-bg: #f1f0ec;
   /* Solid surfaces (cards, inputs) and the fallback for glass without backdrop-filter. */
-  --color-surface: #ececf1;
+  --color-surface: #e9e8e3;
   --color-surface-raised: #ffffff;
   --color-backdrop: rgb(0 0 0 / 0.28);
   /* Neutral default tint of the ambient background (barely visible). */
@@ -51,6 +51,14 @@
   --brand-gradient: linear-gradient(135deg, #7c5cff 0%, #c051ff 48%, #ff5c8a 100%);
   /* Soft wash of the brand colours, for highlighted cards. */
   --brand-wash: linear-gradient(135deg, #efeaff 0%, #fbe9ff 50%, #ffe8ef 100%);
+
+  /* ── Colour: dashboard tiles ───────────────────────────────── */
+  --tile-green: #12a150;
+  --tile-purple: #8676e8;
+  --tile-yellow: #f2b829;
+  --tile-blue: #5b9bf8;
+  --tile-blue-soft: #c9ddfc;
+  --tile-navy: #27349a;
 
   /* ── Colour: subjects (same hex values as SUBJECT_COLORS) ──── */
   --subject-green: #1f9d55;
@@ -106,13 +114,13 @@
   --radius-lg: 16px;
   --radius-xl: 20px;
   --radius-2xl: 28px;
-  --radius-card: 22px;
+  --radius-card: 28px;
   --radius-pill: 999px;
 
   /* ── Shadows ───────────────────────────────────────────────── */
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.06);
   /* White cards on the grey page. */
-  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.04), 0 12px 32px -16px rgb(0 0 0 / 0.14);
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.03), 0 10px 30px -18px rgb(60 50 30 / 0.16);
   --shadow-md: 0 8px 24px rgb(0 0 0 / 0.08), 0 1px 3px rgb(0 0 0 / 0.06);
   --shadow-lg: 0 20px 56px rgb(0 0 0 / 0.14), 0 2px 8px rgb(0 0 0 / 0.06);
 
