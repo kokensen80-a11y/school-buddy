@@ -69,6 +69,8 @@ export interface LargeHeaderProps {
   subtitle?: ReactNode;
   /** Control on the right, level with the title, e.g. an `IconButton` or `Avatar`. */
   trailing?: ReactNode;
+  /** Something on the left, level with the title, e.g. a streak badge. */
+  leading?: ReactNode;
   className?: string;
 }
 
@@ -76,9 +78,10 @@ export interface LargeHeaderProps {
  * Large title for the four tab-root screens, like an iOS large title. It is part of
  * the scrolling content: put it first inside a `Screen` that has no `topBar`.
  */
-export function LargeHeader({ title, subtitle, trailing, className }: LargeHeaderProps) {
+export function LargeHeader({ title, subtitle, trailing, leading, className }: LargeHeaderProps) {
   return (
     <header className={cx('sb-large-header', className)}>
+      {leading != null && <div className="sb-large-header__leading">{leading}</div>}
       <div className="sb-large-header__text">
         <h1 className="sb-large-header__title">{title}</h1>
         {subtitle != null && <p className="sb-large-header__subtitle">{subtitle}</p>}

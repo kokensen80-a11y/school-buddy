@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { CalendarDays, GraduationCap, House, UserRound } from 'lucide-react';
+import { CalendarDays, GraduationCap, House, Plus, UserRound } from 'lucide-react';
 import { TabBar, type TabBarItem } from '../components/ui';
 import { useInbox } from '../lib/store';
 import { isTabRoot, navigate, tabOf, useRoute, type Route, type TabName } from '../lib/router';
@@ -53,7 +53,13 @@ export default function MainShell() {
     <div ref={mainRef} className="sb-shell">
       <RouteScreen key={key} route={route} />
       {isTabRoot(route) && (
-        <TabBar aria-label="Hoofdmenu" items={tabs} value={tab} onChange={(k) => navigate({ name: k })} />
+        <TabBar
+          aria-label="Hoofdmenu"
+          items={tabs}
+          value={tab}
+          onChange={(k) => navigate({ name: k })}
+          center={{ label: 'Toets toevoegen', icon: <Plus strokeWidth={2.5} />, onClick: () => navigate({ name: 'toets-nieuw' }) }}
+        />
       )}
     </div>
   );

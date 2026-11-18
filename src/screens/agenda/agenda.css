@@ -1,4 +1,8 @@
 .sb-cal {
+  padding: var(--space-3) var(--space-2) var(--space-2);
+  border-radius: var(--radius-card);
+  background: var(--color-surface-raised);
+  box-shadow: var(--shadow-card);
   touch-action: pan-y;
   user-select: none;
 }
@@ -48,13 +52,15 @@
 }
 
 .sb-cal__day.is-today .sb-cal__num {
-  box-shadow: inset 0 0 0 1.5px var(--color-accent);
+  box-shadow: inset 0 0 0 2px var(--brand);
+  color: var(--brand);
   font-weight: var(--weight-bold);
 }
 
 .sb-cal__day.is-selected .sb-cal__num {
-  background: var(--color-accent);
-  color: var(--color-on-accent);
+  background: var(--brand-gradient);
+  box-shadow: 0 6px 14px -6px rgb(160 80 255 / 0.6);
+  color: #fff;
   font-weight: var(--weight-bold);
 }
 

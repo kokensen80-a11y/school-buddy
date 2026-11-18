@@ -1,14 +1,15 @@
 /*
- * Design tokens. Light and clean: a white page, near-black text, black accents and
- * frosted glass for floating controls. Components use these tokens instead of raw values.
+ * Design tokens. Calm and light like a journaling app: a soft grey page, white cards
+ * with big rounded corners, black pill buttons, and colour from the subjects and one
+ * purple to pink brand gradient. Components use these tokens instead of raw values.
  */
 :root {
   color-scheme: light;
 
   /* ── Colour: background layers ─────────────────────────────── */
-  --color-bg: #ffffff;
+  --color-bg: #f2f2f6;
   /* Solid surfaces (cards, inputs) and the fallback for glass without backdrop-filter. */
-  --color-surface: #f4f4f5;
+  --color-surface: #ececf1;
   --color-surface-raised: #ffffff;
   --color-backdrop: rgb(0 0 0 / 0.28);
   /* Neutral default tint of the ambient background (barely visible). */
@@ -37,12 +38,19 @@
   /* ── Colour: accent and status ─────────────────────────────── */
   --color-accent: #0a0a0a;
   --color-on-accent: #ffffff;
-  --color-success: #0a0a0a;
-  --color-success-solid: #0a0a0a;
+  --color-success: #0f9f5f;
+  --color-success-solid: #12b76a;
   --color-warning: #b26b00;
   --color-danger: #d1242f;
   --color-danger-solid: #d1242f;
-  --color-focus-ring: #0a0a0a;
+  --color-focus-ring: #7c5cff;
+
+  /* ── Colour: brand ─────────────────────────────────────────── */
+  --brand: #7c5cff;
+  --brand-pink: #ff5c8a;
+  --brand-gradient: linear-gradient(135deg, #7c5cff 0%, #c051ff 48%, #ff5c8a 100%);
+  /* Soft wash of the brand colours, for highlighted cards. */
+  --brand-wash: linear-gradient(135deg, #efeaff 0%, #fbe9ff 50%, #ffe8ef 100%);
 
   /* ── Colour: subjects (same hex values as SUBJECT_COLORS) ──── */
   --subject-green: #1f9d55;
@@ -98,10 +106,13 @@
   --radius-lg: 16px;
   --radius-xl: 20px;
   --radius-2xl: 28px;
+  --radius-card: 22px;
   --radius-pill: 999px;
 
   /* ── Shadows ───────────────────────────────────────────────── */
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.06);
+  /* White cards on the grey page. */
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.04), 0 12px 32px -16px rgb(0 0 0 / 0.14);
   --shadow-md: 0 8px 24px rgb(0 0 0 / 0.08), 0 1px 3px rgb(0 0 0 / 0.06);
   --shadow-lg: 0 20px 56px rgb(0 0 0 / 0.14), 0 2px 8px rgb(0 0 0 / 0.06);
 
@@ -141,7 +152,7 @@
   --topbar-height: 44px;
   /* Distance of the floating top bar from the top edge. */
   --topbar-top: max(12px, calc(var(--safe-top) + 4px));
-  --tabbar-height: 60px;
-  /* The tab bar floats low, partly inside the home-indicator area like on iOS. */
-  --tabbar-bottom: max(12px, calc(var(--safe-bottom) - 12px));
+  --tabbar-height: 64px;
+  /* The tab bar is a flat bar on the bottom edge; this is the room under it. */
+  --tabbar-bottom: var(--safe-bottom);
 }

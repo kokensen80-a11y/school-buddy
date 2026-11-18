@@ -5,7 +5,8 @@
   initial-value: #8a8a8a;
 }
 
-/* Clean white page. The tint (a subject colour) only shows as a faint wash at the top. */
+/* Soft grey page with a few colour washes at the top: brand purple and pink, plus the
+   current subject colour when a screen sets one. */
 .sb-ambient {
   --sb-ambient-tint: var(--ambient-tint);
   position: fixed;
@@ -14,14 +15,16 @@
   pointer-events: none;
   background-color: var(--color-bg);
   transition: --sb-ambient-tint var(--duration-slower) var(--ease-in-out);
+  background-image:
+    radial-gradient(60% 34% at 8% -4%, rgb(124 92 255 / 0.18) 0%, transparent 70%),
+    radial-gradient(55% 30% at 96% 2%, rgb(255 92 138 / 0.14) 0%, transparent 70%);
 }
 
 @supports (color: color-mix(in srgb, red 10%, white)) {
   .sb-ambient {
-    background-image: radial-gradient(
-      ellipse 130% 38% at 50% 0%,
-      color-mix(in srgb, var(--sb-ambient-tint) 9%, transparent) 0%,
-      transparent 100%
-    );
+    background-image:
+      radial-gradient(60% 34% at 8% -4%, rgb(124 92 255 / 0.18) 0%, transparent 70%),
+      radial-gradient(55% 30% at 96% 2%, rgb(255 92 138 / 0.14) 0%, transparent 70%),
+      radial-gradient(ellipse 120% 30% at 50% 0%, color-mix(in srgb, var(--sb-ambient-tint) 10%, transparent) 0%, transparent 100%);
   }
 }

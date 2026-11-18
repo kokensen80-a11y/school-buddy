@@ -7,10 +7,10 @@
   width: 100%;
   min-width: 0;
   padding: var(--sb-card-pad);
-  border: 1px solid var(--glass-border);
-  border-top-color: rgb(0 0 0 / 0.09);
-  border-radius: var(--radius-xl);
-  background: var(--glass-fill-subtle);
+  border: 0;
+  border-radius: var(--radius-card);
+  background: var(--color-surface-raised);
+  box-shadow: var(--shadow-card);
   color: inherit;
   text-align: start;
 }
@@ -23,7 +23,7 @@
 
 .sb-card--pad-sm {
   --sb-card-pad: var(--space-3);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xl);
 }
 
 .sb-card--pad-lg {
@@ -40,13 +40,12 @@
 }
 
 .sb-card--interactive:active:not(:disabled) {
-  background: var(--glass-fill);
   transform: scale(0.985);
 }
 
 @media (hover: hover) {
   .sb-card--interactive:hover:not(:disabled) {
-    background: var(--glass-fill);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.05), 0 16px 36px -16px rgb(0 0 0 / 0.2);
   }
 }
 

@@ -8,15 +8,17 @@
   justify-content: space-between;
   gap: var(--space-3);
   min-height: 28px;
-  padding-bottom: var(--space-2);
-  border-bottom: 1px solid var(--color-separator);
+  padding: 0 var(--space-1) var(--space-1);
 }
 
+/* Small spaced capitals, like "GET INSPIRED". */
 .sb-section__label {
-  color: var(--color-text-secondary);
-  font-size: var(--text-md);
-  font-weight: var(--weight-medium);
+  color: rgb(0 0 0 / 0.46);
+  font-size: 12px;
+  font-weight: var(--weight-bold);
   line-height: var(--leading-snug);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
 .sb-section__trailing {

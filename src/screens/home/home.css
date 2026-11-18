@@ -8,3 +8,88 @@
   font-size: var(--text-sm);
   font-weight: var(--weight-semibold);
 }
+
+.sb-streak {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 36px;
+  padding: 0 12px 0 10px;
+  border-radius: var(--radius-pill);
+  background: #fff;
+  box-shadow: var(--shadow-card);
+  font-weight: 800;
+  font-size: 15px;
+}
+
+.sb-streak svg {
+  color: #ff7a1a;
+  fill: #ffb21a;
+}
+
+.sb-weekchecks {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin: calc(var(--space-2) * -1) 0 var(--space-2);
+}
+
+.sb-weekchecks__day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 0 6px;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  background: none;
+  color: rgb(0 0 0 / 0.45);
+  font: inherit;
+  cursor: pointer;
+}
+
+.sb-weekchecks__day.is-today {
+  border-color: rgb(0 0 0 / 0.08);
+  background: #fff;
+  color: var(--color-text);
+  box-shadow: var(--shadow-card);
+}
+
+.sb-weekchecks__name {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.sb-weekchecks__mark {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  font-size: 15px;
+  font-weight: 600;
+  color: inherit;
+}
+
+.sb-weekchecks__day.is-done .sb-weekchecks__mark {
+  background: var(--brand-gradient);
+  color: #fff;
+}
+
+.sb-weekchecks__exam {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+/* The greeting sits between the streak and the bell, so it is a little smaller. */
+.sb-home-header {
+  padding-left: 72px;
+  padding-right: 72px;
+}
+
+.sb-home-header .sb-large-header__title {
+  font-size: 24px;
+  line-height: 44px;
+}

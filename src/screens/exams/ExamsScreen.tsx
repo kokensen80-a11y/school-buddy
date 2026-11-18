@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import { GraduationCap, Plus } from 'lucide-react';
+import { GraduationCap } from 'lucide-react';
 import {
   Button,
   Card,
   EmptyState,
-  IconButton,
   LargeHeader,
   ListRow,
   Screen,
@@ -38,18 +37,12 @@ export default function ExamsScreen() {
   const past = pastExams(exams, today);
   const visiblePast = showAllPast ? past : past.slice(0, 3);
 
-  const addButton = (
-    <IconButton aria-label="Toets toevoegen" onClick={() => navigate({ name: 'toets-nieuw' })}>
-      <Plus />
-    </IconButton>
-  );
 
   return (
     <Screen withTabBar>
       <LargeHeader
         title="Toetsen"
         subtitle={upcoming.length > 0 ? plural(upcoming.length, 'toets gepland', 'toetsen gepland') : undefined}
-        trailing={addButton}
       />
       {exams.length === 0 ? (
         <EmptyState

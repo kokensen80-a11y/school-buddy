@@ -16,7 +16,7 @@ import {
 import { SessionList } from '../../components/domain/Sessions';
 import { PlanWarnings } from '../../components/domain/PlanWarnings';
 import { WeekLoad } from '../../components/domain/WeekLoad';
-import { useAccount, useExams, useInbox, useSessions, useSubjects } from '../../lib/store';
+import { useExams, useInbox, useSessions, useSubjects } from '../../lib/store';
 import { useNowMinutes, useToday } from '../../lib/clock';
 import { formatDateLong, formatDuration, formatRelative } from '../../lib/date';
 import { navigate } from '../../lib/router';
@@ -34,18 +34,17 @@ import {
   weekLoad,
 } from '../../lib/selectors';
 import { upcomingExams } from '../exams/examHelpers';
+import { StreakBadge, WeekChecks, greeting } from './HomeHeader';
 import './home.css';
 
 /** "What do I have to do today?" at a glance. */
 export default function HomeScreen() {
-  const account = useAccount();
   const exams = useExams();
   const subjects = subjectMap(useSubjects());
   const sessions = useSessions();
   const inbox = useInbox();
   const today = useToday();
   const now = useNowMinutes();
-  const firstName = account?.name.trim().split(/\s+/)[0] ?? '';
 
   const todays = sessionsOn(sessions, today).filter((s) => s.status !== 'overgeslagen');
   const load = dayLoad(sessions, today);
@@ -69,7 +68,7 @@ export default function HomeScreen() {
   if (exams.length === 0) {
     return (
       <Screen withTabBar>
-        <LargeHeader title={`Hoi ${firstName}`} subtitle={formatDateLong(today, today)} trailing={bell} />
+        <LargeHeader title={greeting(now)} subtitle={formatDateLong(today, today)} trailing={bell} className="sb-home-header" />
         <EmptyState
           icon={<GraduationCap />}
           title="Zet je eerste toets erin"
@@ -84,7 +83,14 @@ export default function HomeScreen() {
 
   return (
     <Screen withTabBar>
-      <LargeHeader title={`Hoi ${firstName}`} subtitle={formatDateLong(today, today)} trailing={bell} />
+      <LargeHeader
+        title={greeting(now)}
+        subtitle={formatDateLong(today, today)}
+        leading={<StreakBadge days={streak} />}
+        trailing={bell}
+        className="sb-home-header"
+      />
+      <WeekChecks today={today} />
       <Stack gap={6}>
         {examsToday.map((exam) => (
           <Card key={exam.id} onClick={() => navigate({ name: 'toets', id: exam.id })}>

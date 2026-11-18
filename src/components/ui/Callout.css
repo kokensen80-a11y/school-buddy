@@ -1,23 +1,27 @@
 .sb-callout {
-  --sb-callout-color: var(--color-text);
+  --sb-callout-color: var(--brand);
   display: flex;
   gap: var(--space-3);
-  padding: var(--space-3) var(--space-4);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-lg);
-  background: var(--glass-fill-subtle);
+  padding: var(--space-4);
+  border: 0;
+  border-radius: var(--radius-xl);
+  background: var(--brand-wash);
 }
 
+/* Each tone gets its own soft colour. */
 .sb-callout--success {
   --sb-callout-color: var(--color-success);
+  background: #e6f7ee;
 }
 
 .sb-callout--warning {
-  --sb-callout-color: var(--color-warning);
+  --sb-callout-color: #e8760c;
+  background: #fff1e3;
 }
 
 .sb-callout--danger {
   --sb-callout-color: var(--color-danger);
+  background: #ffe9ec;
 }
 
 .sb-callout__icon {
