@@ -24,7 +24,7 @@ import {
 } from '../../components/ui';
 import { actions, useExams, useSubjects } from '../../lib/store';
 import { useToday } from '../../lib/clock';
-import { isValidISODate } from '../../lib/date';
+import { formatDayMonth, isValidISODate } from '../../lib/date';
 import { EXAM_KINDS, EXAM_KIND_ORDER, SUBJECT_COLORS, SUBJECT_COLOR_ORDER } from '../../lib/labels';
 import { goBack, navigate } from '../../lib/router';
 import type { Difficulty, Exam, ExamKind, ID, SubjectColor } from '../../types';
@@ -103,8 +103,20 @@ export default function ExamEditScreen({ examId }: { examId?: ID }) {
   /** The form as it was before the first scan, so a second photo starts clean. */
   const [preScan, setPreScan] = useState<{ form: FormState; topics: string } | null>(null);
 
-  const applyScan = (r: ScanResult, file: File) => {
-    const subjectName = subjects.find((s) => s.id === r.subjectId)?.name ?? r.subjectName;
+  const applyScan = async (r: ScanResult, file: File) => {
+    // A subject that is not in the account yet is added right away, so the form is complete.
+    let subjectId = r.subjectId;
+    if (!subjectId && r.subjectName) {
+      const name = r.subjectName;
+      subjectId = subjects.find((s) => s.name.trim().toLowerCase() === name.toLowerCase())?.id;
+      if (!subjectId) {
+        const used = new Set(subjects.map((s) => s.color));
+        const color = SUBJECT_COLOR_ORDER.find((c) => !used.has(c)) ?? SUBJECT_COLOR_ORDER[subjects.length % SUBJECT_COLOR_ORDER.length];
+        const created = await actions.addSubject({ name, color });
+        if (created.ok) subjectId = created.subject.id;
+      }
+    }
+    const subjectName = subjects.find((s) => s.id === subjectId)?.name ?? r.subjectName;
     const base = preScan ?? { form, topics: topicsText };
     if (!preScan) setPreScan(base);
     setTopicsText(base.topics.trim() ? base.topics : (r.topics ?? []).join('\n'));
@@ -113,20 +125,22 @@ export default function ExamEditScreen({ examId }: { examId?: ID }) {
       const kind = r.kind ?? f.kind;
       return {
         ...f,
-        // A new subject name means the user still has to add that subject.
-        subjectId: r.subjectId ?? (r.subjectName ? '' : f.subjectId),
+        subjectId: subjectId ?? (r.subjectName ? '' : f.subjectId),
         date: r.date ?? f.date,
         time: r.time ?? f.time,
         location: r.location ?? f.location,
         kind,
-        title: f.title || r.title || (subjectName ? `${EXAM_KINDS[kind].label} ${subjectName}` : ''),
+        title:
+          f.title ||
+          r.title ||
+          [EXAM_KINDS[kind].label, subjectName ?? (r.date ? formatDayMonth(r.date) : '')].filter(Boolean).join(' '),
         weight: r.weight ?? f.weight,
         notes:
           f.notes ||
           [r.endTime ? `Tot ${r.endTime}` : '', ...(r.notes ?? [])].filter(Boolean).join('\n'),
       };
     });
-    if (!r.subjectId && r.subjectName) setSubjectSuggestion((s) => ({ name: r.subjectName!, n: (s?.n ?? 0) + 1 }));
+    if (!subjectId && r.subjectName) setSubjectSuggestion((s) => ({ name: r.subjectName!, n: (s?.n ?? 0) + 1 }));
     setErrors({});
     setPhoto(file);
     setScanned(foundSummary(r));
@@ -238,7 +252,7 @@ export default function ExamEditScreen({ examId }: { examId?: ID }) {
               Controleer even of alles klopt. De foto wordt bij de toets bewaard.
             </Callout>
           ) : (
-            <PhotoScan onResult={applyScan} />
+            <PhotoScan onResult={(r, file) => void applyScan(r, file)} />
           ))}
 
         <SubjectPicker

@@ -228,35 +228,37 @@ interface KnownSubject {
   words: string[];
   /** Codes only matched in capitals, because many are also short Dutch words. */
   codes: string[];
+  /** School system codes (Magister, SOMtoday), matched in any case at the start of a line. */
+  short?: string[];
 }
 
 const KNOWN_SUBJECTS: KnownSubject[] = [
-  { name: 'Bedrijfseconomie', words: ['bedrijfseconomie'], codes: ['BECO'] },
+  { name: 'Bedrijfseconomie', words: ['bedrijfseconomie'], codes: ['BECO'], short: ['beco', 'm&o'] },
   { name: 'Maatschappijwetenschappen', words: ['maatschappijwetenschappen'], codes: ['MAW'] },
-  { name: 'Maatschappijleer', words: ['maatschappijleer'], codes: ['MAAT'] },
-  { name: 'Lichamelijke opvoeding', words: ['lichamelijke opvoeding', 'gym'], codes: ['LO'] },
-  { name: 'Wiskunde', words: ['wiskunde', 'wisk'], codes: ['WI', 'WIS', 'WISA', 'WISB', 'WISC', 'WISD'] },
-  { name: 'Nederlands', words: ['nederlands'], codes: ['NE', 'NED', 'NL'] },
-  { name: 'Engels', words: ['engels', 'english'], codes: ['ENG'] },
-  { name: 'Duits', words: ['duits'], codes: ['DU', 'DUI'] },
-  { name: 'Frans', words: ['frans'], codes: ['FA', 'FR', 'FRA'] },
-  { name: 'Spaans', words: ['spaans'], codes: ['SP', 'SPA'] },
-  { name: 'Latijn', words: ['latijn'], codes: ['LA', 'LAT'] },
-  { name: 'Grieks', words: ['grieks'], codes: ['GR', 'GRT'] },
-  { name: 'Biologie', words: ['biologie', 'bio'], codes: ['BI', 'BIO'] },
-  { name: 'Scheikunde', words: ['scheikunde'], codes: ['SK', 'SCH'] },
-  { name: 'Natuurkunde', words: ['natuurkunde'], codes: ['NA', 'NAT'] },
-  { name: 'Nask', words: ['nask'], codes: ['NASK'] },
-  { name: 'Geschiedenis', words: ['geschiedenis'], codes: ['GS', 'GES'] },
-  { name: 'Aardrijkskunde', words: ['aardrijkskunde'], codes: ['AK'] },
-  { name: 'Economie', words: ['economie'], codes: ['EC', 'ECO'] },
-  { name: 'Filosofie', words: ['filosofie'], codes: ['FI', 'FIL'] },
-  { name: 'Informatica', words: ['informatica'], codes: ['INF'] },
+  { name: 'Maatschappijleer', words: ['maatschappijleer'], codes: ['MAAT'], short: ['maat', 'ml'] },
+  { name: 'Lichamelijke opvoeding', words: ['lichamelijke opvoeding', 'gym'], codes: ['LO'], short: ['lo'] },
+  { name: 'Wiskunde', words: ['wiskunde', 'wisk'], codes: ['WI', 'WIS', 'WISA', 'WISB', 'WISC', 'WISD'], short: ['wis', 'wisa', 'wisb', 'wisc', 'wisd', 'wi', 'wa', 'wb'] },
+  { name: 'Nederlands', words: ['nederlands'], codes: ['NE', 'NED', 'NL'], short: ['netl', 'ned', 'ne', 'nl'] },
+  { name: 'Engels', words: ['engels', 'english'], codes: ['ENG'], short: ['entl', 'eng'] },
+  { name: 'Duits', words: ['duits'], codes: ['DU', 'DUI'], short: ['dutl', 'du'] },
+  { name: 'Frans', words: ['frans'], codes: ['FA', 'FR', 'FRA'], short: ['fatl', 'fa', 'fr'] },
+  { name: 'Spaans', words: ['spaans'], codes: ['SP', 'SPA'], short: ['sptl', 'sp'] },
+  { name: 'Latijn', words: ['latijn'], codes: ['LA', 'LAT'], short: ['ltc', 'lat'] },
+  { name: 'Grieks', words: ['grieks'], codes: ['GR', 'GRT'], short: ['grc', 'gtc'] },
+  { name: 'Biologie', words: ['biologie', 'bio'], codes: ['BI', 'BIO'], short: ['biol', 'bio', 'bi'] },
+  { name: 'Scheikunde', words: ['scheikunde'], codes: ['SK', 'SCH'], short: ['schk', 'sk'] },
+  { name: 'Natuurkunde', words: ['natuurkunde'], codes: ['NA', 'NAT'], short: ['nat', 'nask1'] },
+  { name: 'Nask', words: ['nask'], codes: ['NASK'], short: ['nask', 'nask2'] },
+  { name: 'Geschiedenis', words: ['geschiedenis'], codes: ['GS', 'GES'], short: ['ges', 'gesch', 'gs'] },
+  { name: 'Aardrijkskunde', words: ['aardrijkskunde'], codes: ['AK'], short: ['ak', 'aard'] },
+  { name: 'Economie', words: ['economie'], codes: ['EC', 'ECO'], short: ['econ', 'eco', 'ec'] },
+  { name: 'Filosofie', words: ['filosofie'], codes: ['FI', 'FIL'], short: ['fi', 'fil'] },
+  { name: 'Informatica', words: ['informatica'], codes: ['INF'], short: ['inf'] },
   { name: 'CKV', words: ['ckv'], codes: ['CKV'] },
   { name: 'NLT', words: ['nlt'], codes: ['NLT'] },
   { name: 'Muziek', words: ['muziek'], codes: ['MU', 'MUZ'] },
   { name: 'Tekenen', words: ['tekenen', 'beeldende vorming'], codes: ['BV'] },
-  { name: 'Levensbeschouwing', words: ['levensbeschouwing', 'godsdienst'], codes: ['LV', 'LEV'] },
+  { name: 'Levensbeschouwing', words: ['levensbeschouwing', 'godsdienst'], codes: ['LV', 'LEV'], short: ['lv', 'lev', 'gd'] },
   { name: 'Techniek', words: ['techniek'], codes: [] },
 ];
 
@@ -270,7 +272,10 @@ function findSubject(text: string, subjects: ScanOptions['subjects']): Pick<Scan
   for (const known of KNOWN_SUBJECTS) {
     const byWord = known.words.some((w) => containsWord(lower, w));
     const byCode = known.codes.some((c) => new RegExp(`(?<![\\p{L}])${c}(?![\\p{L}])`, 'u').test(text));
-    if (!byWord && !byCode) continue;
+    const byShort = (known.short ?? []).some((c) =>
+      new RegExp(`(?:^|\\n|[|•·])\\s*${escapeRe(c)}(?=\\s*[:|·–-]|\\s+[\\p{L}\\d])`, 'iu').test(text),
+    );
+    if (!byWord && !byCode && !byShort) continue;
     let name = known.name;
     if (name === 'Wiskunde') {
       const variant = lower.match(/wiskunde\s+([abcd])(?![\p{L}])/u)?.[1] ?? text.match(/\bWIS([ABCD])\b/)?.[1];
@@ -284,7 +289,25 @@ function findSubject(text: string, subjects: ScanOptions['subjects']): Pick<Scan
     });
     return match ? { subjectId: match.id } : { subjectName: name };
   }
+  // Not a known subject: a "Vak: ..." label, or the word right after "Toets", "SO"...
+  const labelled = text.match(/(?:^|\n)\s*vak\s*[:\-–]\s*([\p{L}][\p{L}&+ ]{1,30})/iu)?.[1];
+  const afterKind = text.match(
+    /(?<![\p{L}])(?:[Tt]oets|TOETS|[Pp]roefwerk|S[Oo]|so|P[Ww]|pw|[Tt]entamen|[Mm]ondeling|[Pp]resentatie|[Oo]verhoring)\s+([A-Z][\p{Ll}]{3,24})(?![\p{L}])/u,
+  )?.[1];
+  const guess = (labelled ?? afterKind)?.trim().replace(/\s+/g, ' ');
+  if (guess && !NOT_A_SUBJECT.test(fold(guess))) {
+    const name = capitalize(guess);
+    const match = own.find((s) => fold(s.name.trim()) === fold(name));
+    return match ? { subjectId: match.id } : { subjectName: name };
+  }
   return {};
+}
+
+const NOT_A_SUBJECT =
+  /^(hoofdstuk|datum|week|periode|toetsweek|leerstof|over|voor|van|op|in|om|klas|morgen|vandaag|maandag|dinsdag|woensdag|donderdag|vrijdag|zaterdag|zondag|januari|februari|maart|april|mei|juni|juli|augustus|september|oktober|november|december|paragraaf|thema|unit|module|les|deel|blok|nummer|cijfer|resultaat|herkansing|inhalen)/;
+
+function escapeRe(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 // ───────────────────────── kind and title ─────────────────────────

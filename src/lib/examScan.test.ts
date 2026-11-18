@@ -61,6 +61,16 @@ Let op: rekenmachine niet toegestaan`;
     expect(scanExamText('ma 30-11 WISB 2e uur', { today, subjects })[0].subjectId).toBe('s-wib');
   });
 
+  it('finds the subject from school codes, a label or the word after the kind', () => {
+    const one = (t: string) => scanExamText(t, { today, subjects })[0];
+    expect(one('bi - Toets H4\n4 december').subjectId).toBe('s-bio');
+    expect(one('netl: SO woordjes 4 dec').subjectName).toBe('Nederlands');
+    expect(one('Vak: Kunstgeschiedenis\nDatum: 4 december').subjectName).toBe('Kunstgeschiedenis');
+    expect(one('Toets Robotica op 4 december').subjectName).toBe('Robotica');
+    expect(one('Toets Hoofdstuk 3 op 4/12').subjectName).toBeUndefined();
+    expect(one('Info\nToets 4/12').subjectName).toBeUndefined();
+  });
+
   it('does not take paragraph numbers or times for dates', () => {
     const [r] = scanExamText('Leren §4.1 en §4.2\nToets 9.30 uur', { today, subjects });
     expect(r.date).toBeUndefined();
