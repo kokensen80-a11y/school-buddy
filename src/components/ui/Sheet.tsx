@@ -39,7 +39,8 @@ export interface SheetProps {
 }
 
 /** Length of the slide-out animation in Sheet.css. */
-const EXIT_MS = 240;
+/** About 20% shorter than the 320ms entrance. */
+const EXIT_MS = 256;
 /** A swipe on the handle further down than this closes the sheet. */
 const DISMISS_DISTANCE = 96;
 

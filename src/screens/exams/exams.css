@@ -194,11 +194,11 @@
   padding: var(--space-4);
   overflow: hidden;
   border: 0;
-  border-radius: 24px;
+  /* Inner radius = outer radius minus padding: 28 - 16 = 12 for the status bar. */
+  border-radius: 28px;
   /* Full subject colour: lighter top left, deeper bottom right, a soft light spot and fine lines. */
   background:
     radial-gradient(90% 70% at 100% 0%, rgb(255 255 255 / 0.22) 0%, transparent 60%),
-    repeating-linear-gradient(115deg, rgb(255 255 255 / 0.05) 0 2px, transparent 2px 24px),
     linear-gradient(
       150deg,
       color-mix(in srgb, var(--xcard-color) 82%, #fff) 0%,
@@ -215,7 +215,7 @@
 }
 
 .sb-xcard:active {
-  transform: scale(0.985);
+  transform: scale(0.97);
 }
 
 .sb-xcard:focus-visible {
@@ -371,7 +371,7 @@
   align-items: center;
   gap: var(--space-3);
   padding: var(--space-3) var(--space-3) var(--space-3) var(--space-4);
-  border-radius: 20px;
+  border-radius: 12px;
   background: rgb(0 0 0 / 0.2);
   border: 1px solid rgb(255 255 255 / 0.14);
   -webkit-backdrop-filter: blur(10px);

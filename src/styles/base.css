@@ -31,6 +31,8 @@ body {
   font-size: var(--text-base);
   font-weight: var(--weight-regular);
   line-height: var(--leading-normal);
+  /* Numbers line up in lists, tiles and times. */
+  font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -168,4 +170,18 @@ hr {
     transition-delay: 0s !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Headlines wrap into even lines; body text avoids a lonely last word. */
+:is(h1, h2, h3, .sb-xcard__title, .sb-banner__title, .sb-callout__title, .sb-bento__title, .sb-xday__title) {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* Big headlines keep proportional digits: lining up only matters in tiles, lists and times. */
+:is(h1, h2, .sb-xday__title, .sb-xcard__title, .sb-banner__title, .sb-bento__title) {
+  font-variant-numeric: proportional-nums;
 }

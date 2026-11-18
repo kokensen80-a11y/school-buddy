@@ -127,7 +127,8 @@
   justify-content: space-between;
   min-height: 120px;
   padding: 14px 12px;
-  border-radius: 20px;
+  /* Inner radius = card radius 28 minus card padding 20. */
+  border-radius: 8px;
   border: 1px solid rgb(0 0 0 / 0.06);
   background: #fff;
   color: var(--tile-color);
@@ -150,7 +151,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  color: rgb(0 0 0 / 0.6);
+  color: rgb(0 0 0 / 0.66);
   font-size: 15px;
   font-weight: 500;
 }
@@ -308,7 +309,7 @@
 }
 
 .sb-banner:active {
-  transform: scale(0.985);
+  transform: scale(0.97);
 }
 
 .sb-banner__text {

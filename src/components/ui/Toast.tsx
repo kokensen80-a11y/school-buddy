@@ -39,7 +39,8 @@ const TONE_ICON = {
 } as const;
 
 /** Length of the leave animation in Toast.css. */
-const EXIT_MS = 200;
+/** About 20% shorter than the 320ms entrance. */
+const EXIT_MS = 256;
 
 const ToastContext = createContext<ToastApi | null>(null);
 

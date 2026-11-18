@@ -49,7 +49,7 @@
 }
 
 .sb-tab-bar__tab:active {
-  transform: scale(0.94);
+  transform: scale(0.97);
 }
 
 .sb-tab-bar__tab:focus-visible {
@@ -116,7 +116,7 @@
 }
 
 .sb-tab-bar__center:active {
-  transform: scale(0.92);
+  transform: scale(0.97);
 }
 
 .sb-tab-bar__center:focus-visible {

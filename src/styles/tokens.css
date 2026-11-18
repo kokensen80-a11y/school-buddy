@@ -255,6 +255,8 @@
 }
 
 .sb-screen .sb-exam-form .sb-card {
+  /* Inner radius = form radius 28 minus form padding 20. */
+  border-radius: 8px;
   background: #f2f2f5;
   box-shadow: none;
 }

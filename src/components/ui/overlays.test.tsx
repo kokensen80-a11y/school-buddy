@@ -64,7 +64,7 @@ describe('ToastProvider / useToast', () => {
     expect(query(document.body, '.sb-toast').textContent).toBe('Tweede');
     advance(500);
     expect(query(document.body, '.sb-toast').className).toContain('sb-toast--leaving');
-    advance(200);
+    advance(256);
     expect(document.querySelector('.sb-toast')).toBeNull();
   });
 
@@ -72,7 +72,7 @@ describe('ToastProvider / useToast', () => {
     const toast = setup();
     act(() => toast.success('Klaar'));
     click(query(document.body, '.sb-toast'));
-    advance(200);
+    advance(256);
     expect(document.querySelector('.sb-toast')).toBeNull();
   });
 
@@ -175,7 +175,7 @@ describe('Sheet', () => {
     const container = render(<Harness open onClose={() => undefined} />);
     rerender(container, <Harness open={false} onClose={() => undefined} />);
     expect(query(document.body, '.sb-sheet').getAttribute('data-state')).toBe('closing');
-    advance(240);
+    advance(256);
     expect(document.querySelector('.sb-sheet')).toBeNull();
   });
 
@@ -239,7 +239,7 @@ describe('ConfirmProvider / useConfirm', () => {
     click(buttonNamed('Verwijderen'));
     await flush();
     expect(answers).toEqual([true]);
-    advance(240);
+    advance(256);
     expect(document.querySelector('.sb-sheet')).toBeNull();
   });
 

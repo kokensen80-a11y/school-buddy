@@ -29,7 +29,7 @@
   line-height: var(--leading-snug);
   cursor: pointer;
   pointer-events: auto;
-  animation: sb-toast-in var(--duration-slow) var(--ease-spring) both;
+  animation: sb-toast-in var(--duration-slow) var(--ease-out) both;
 }
 
 .sb-toast--error {
@@ -43,7 +43,7 @@
 }
 
 .sb-toast--leaving {
-  animation: sb-toast-out 200ms var(--ease-in) both;
+  animation: sb-toast-out 256ms var(--ease-in) both;
 }
 
 .sb-toast__icon {
@@ -67,14 +67,14 @@
 @keyframes sb-toast-in {
   from {
     opacity: 0;
-    transform: translateY(-120%) scale(0.96);
+    transform: translateY(-120%) scale(0.95);
   }
 }
 
 @keyframes sb-toast-out {
   to {
     opacity: 0;
-    transform: translateY(-60%) scale(0.96);
+    transform: translateY(-60%) scale(0.95);
   }
 }
 

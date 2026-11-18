@@ -40,7 +40,7 @@
 }
 
 .sb-card--interactive:active:not(:disabled) {
-  transform: scale(0.985);
+  transform: scale(0.97);
 }
 
 @media (hover: hover) {

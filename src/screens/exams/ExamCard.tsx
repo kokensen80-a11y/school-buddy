@@ -3,7 +3,6 @@ import {
   ArrowRight,
   FileCheck,
   GraduationCap,
-  Info,
   MapPin,
   MessageCircle,
   PencilLine,
@@ -114,7 +113,6 @@ export function ExamCard({
 
       <span className="sb-xcard__badges" aria-hidden>
         <span className="sb-xcard__badge sb-xcard__badge--glass">
-          <Info size={15} />
           {exam.weight && exam.weight > 1 ? `${kind} · telt ${exam.weight}x` : kind}
         </span>
         <span className="sb-xcard__badge sb-xcard__badge--solid">{countdown(exam.date, today)}</span>

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { File as FileIcon, FileText, Paperclip, Trash2, X } from 'lucide-react';
-import { Button, IconButton, Section, Stack, Text, useConfirm, useToast } from '../../components/ui';
+import { Button, IconButton, Section, Skeleton, Stack, Text, useConfirm, useToast } from '../../components/ui';
 import { actions } from '../../lib/store';
 import type { Exam } from '../../types';
 
@@ -47,10 +47,12 @@ function FileGrid({
         <div className="sb-exam-photos">
           {images.map((f) => (
             <div key={f.key} className="sb-exam-photo">
-              {f.url && (
+              {f.url ? (
                 <a href={f.url} target="_blank" rel="noreferrer" aria-label={`${f.name} openen`}>
                   <img src={f.url} alt="" />
                 </a>
+              ) : (
+                <Skeleton shape="card" width="100%" height="100%" />
               )}
               <button
                 type="button"

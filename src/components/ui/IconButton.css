@@ -46,7 +46,7 @@
 }
 
 .sb-icon-button:active:not(:disabled) {
-  transform: scale(0.94);
+  transform: scale(0.97);
 }
 
 .sb-icon-button--glass:active:not(:disabled) {

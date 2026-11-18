@@ -41,11 +41,11 @@
 }
 
 .sb-sheet[data-state='closing'] .sb-sheet__backdrop {
-  animation: sb-sheet-fade-out 240ms var(--ease-in) forwards;
+  animation: sb-sheet-fade-out 256ms var(--ease-in) forwards;
 }
 
 .sb-sheet[data-state='closing'] .sb-sheet__panel {
-  animation: sb-sheet-out 240ms var(--ease-in) forwards;
+  animation: sb-sheet-out 256ms var(--ease-in) forwards;
 }
 
 .sb-sheet__header {

@@ -51,7 +51,6 @@ export function TimeTiles({ today }: { today: ISODate }) {
       <h2 id="bento-time" className="sb-bento__title">
         Leertijd
       </h2>
-      <p className="sb-bento__sub">Wat er deze week op je planning staat</p>
       <div className="sb-tiles">
         {tiles.map((t) => {
           const [num, unit] = bigTime(t.minutes);
