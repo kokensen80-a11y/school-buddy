@@ -7,7 +7,8 @@
   color-scheme: light;
 
   /* ── Colour: background layers ─────────────────────────────── */
-  --color-bg: #f1f0ec;
+  /* Behind everything (overscroll); the screens show the night sky of AmbientBackground. */
+  --color-bg: #01020a;
   /* Solid surfaces (cards, inputs) and the fallback for glass without backdrop-filter. */
   --color-surface: #e9e8e3;
   --color-surface-raised: #ffffff;
@@ -163,4 +164,113 @@
   --tabbar-height: 64px;
   /* The tab bar is a flat bar on the bottom edge; this is the room under it. */
   --tabbar-bottom: var(--safe-bottom);
+}
+
+/*
+ * Screens sit on a night sky that fades into a bright blue horizon, so text placed
+ * straight on the page is white and the accent is white. White tiles and controls inside
+ * a screen switch back to the dark-on-white tokens above. Sheets, toasts and the tab bar
+ * live outside .sb-screen and keep the light tokens.
+ */
+.sb-screen {
+  --color-text: #ffffff;
+  --color-text-secondary: rgb(255 255 255 / 0.76);
+  --color-text-tertiary: rgb(255 255 255 / 0.52);
+  --color-text-inverse: #0a0a0a;
+  --glass-fill-strong: rgb(255 255 255 / 0.16);
+  --glass-fill-subtle: rgb(255 255 255 / 0.08);
+  --glass-fill-inset: rgb(255 255 255 / 0.12);
+  --glass-border: rgb(255 255 255 / 0.2);
+  --color-separator: rgb(255 255 255 / 0.18);
+  --color-accent: #ffffff;
+  --color-on-accent: #0a0a0a;
+  --color-focus-ring: #ffffff;
+  --color-surface: rgb(255 255 255 / 0.12);
+  color: var(--color-text);
+  /* Keeps white text readable where it passes the bright horizon band. */
+  text-shadow: 0 1px 10px rgb(0 20 70 / 0.45);
+}
+
+.sb-screen
+  :is(
+    .sb-choice-chip,
+    .sb-exam-form,
+    .sb-card,
+    .sb-bento__card,
+    .sb-cal,
+    .sb-callout,
+    .sb-icon-button--glass,
+    .sb-glass-pill,
+    .sb-control,
+    .sb-stepper,
+    .sb-segmented,
+    .sb-file
+  ) {
+  --color-text: #0a0a0a;
+  --color-text-secondary: rgb(0 0 0 / 0.6);
+  --color-text-tertiary: rgb(0 0 0 / 0.42);
+  --color-text-inverse: #ffffff;
+  --glass-fill-strong: rgb(0 0 0 / 0.07);
+  --glass-fill-subtle: rgb(0 0 0 / 0.035);
+  --glass-fill-inset: rgb(0 0 0 / 0.045);
+  --glass-border: rgb(0 0 0 / 0.08);
+  --color-separator: rgb(0 0 0 / 0.09);
+  --color-accent: #0a0a0a;
+  --color-on-accent: #ffffff;
+  --color-focus-ring: #7c5cff;
+  --color-surface: #ececf1;
+  color: var(--color-text);
+  text-shadow: none;
+}
+
+/* Form controls straight on the sky become white tiles too. */
+.sb-screen :is(.sb-control, .sb-stepper, .sb-segmented) {
+  border-color: transparent;
+  background-color: #ffffff;
+}
+
+.sb-screen .sb-file {
+  background: #ffffff;
+}
+
+/* Round glass buttons and choice chips on the sky are solid white tiles. */
+.sb-screen :is(.sb-icon-button--glass, .sb-glass-pill, .sb-choice-chip:not(.sb-choice-chip--selected)) {
+  background: #ffffff;
+}
+
+.sb-screen :is(.sb-xcard, .sb-banner, .sb-button, .sb-action-tile) {
+  text-shadow: none;
+}
+
+/* The exam form is one big white tile; cards inside it are soft grey instead of raised. */
+.sb-screen .sb-exam-form {
+  padding: 20px;
+  border-radius: var(--radius-card);
+  background: #ffffff;
+  box-shadow: var(--shadow-card);
+}
+
+.sb-screen .sb-exam-form :is(.sb-control, .sb-stepper, .sb-segmented) {
+  background-color: #f2f2f5;
+}
+
+.sb-screen .sb-exam-form .sb-card {
+  background: #f2f2f5;
+  box-shadow: none;
+}
+
+.sb-screen .sb-exam-form .sb-choice-chip:not(.sb-choice-chip--selected) {
+  background: #f2f2f5;
+}
+
+/* Secondary buttons and action tiles on the sky: white tiles with dark text. */
+.sb-screen :is(.sb-button--secondary, .sb-action-tile--secondary) {
+  --color-text: #0a0a0a;
+  background: #ffffff;
+  color: #0a0a0a;
+}
+
+/* Inside white tiles they go back to the soft grey well. */
+.sb-screen :is(.sb-card, .sb-bento__card, .sb-callout, .sb-exam-form) :is(.sb-button--secondary, .sb-action-tile--secondary) {
+  background: rgb(0 0 0 / 0.07);
 }

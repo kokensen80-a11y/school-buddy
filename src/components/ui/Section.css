@@ -13,7 +13,7 @@
 
 /* Small spaced capitals, like "GET INSPIRED". */
 .sb-section__label {
-  color: rgb(0 0 0 / 0.46);
+  color: var(--color-text-secondary);
   font-size: 12px;
   font-weight: var(--weight-bold);
   line-height: var(--leading-snug);

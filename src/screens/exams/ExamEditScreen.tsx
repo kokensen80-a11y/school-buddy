@@ -6,7 +6,6 @@ import {
   ChoiceChip,
   EmptyState,
   Field,
-  Heading,
   Screen,
   Section,
   Select,
@@ -240,10 +239,6 @@ export default function ExamEditScreen({ examId }: { examId?: ID }) {
   return (
     <Screen topBar={<TopBar title={isNew ? 'Nieuwe toets' : 'Toets bewerken'} onBack={() => void back()} />}>
       <form className="sb-exam-form" onSubmit={submit} noValidate>
-        <Heading level={1} size="title">
-          {isNew ? 'Nieuwe toets' : 'Toets bewerken'}
-        </Heading>
-
         {isNew &&
           (scanned ? (
             <Callout

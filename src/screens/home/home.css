@@ -128,7 +128,9 @@
   min-height: 120px;
   padding: 14px 12px;
   border-radius: 20px;
-  color: #fff;
+  border: 1px solid rgb(0 0 0 / 0.06);
+  background: #fff;
+  color: var(--tile-color);
 }
 
 .sb-tile__num {
@@ -145,9 +147,20 @@
 }
 
 .sb-tile__label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: rgb(0 0 0 / 0.6);
   font-size: 15px;
   font-weight: 500;
-  opacity: 0.92;
+}
+
+.sb-tile__label::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--tile-color);
 }
 
 /* Stat cards with a big number and an emoji as illustration */

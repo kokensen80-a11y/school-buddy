@@ -56,7 +56,7 @@ export function TimeTiles({ today }: { today: ISODate }) {
         {tiles.map((t) => {
           const [num, unit] = bigTime(t.minutes);
           return (
-            <div key={t.label} className="sb-tile" style={{ background: t.color }}>
+            <div key={t.label} className="sb-tile" style={{ '--tile-color': t.color } as CSSProperties}>
               <span className="sb-tile__num">
                 {num} <small>{unit}</small>
               </span>
