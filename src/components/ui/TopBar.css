@@ -24,14 +24,21 @@
   padding: 0 var(--space-1);
 }
 
-/* Centred lowercase title with a full stop, like "weekly themes." */
+/* No visible title: only a centred subtitle with optional controls on either side. */
 .sb-large-header {
   position: relative;
   display: flex;
+  align-items: center;
   justify-content: center;
-  margin-bottom: var(--space-6);
-  padding: var(--space-1) 56px 0;
+  min-height: 44px;
+  margin-bottom: var(--space-5);
+  padding: 0 56px;
   text-align: center;
+}
+
+.sb-large-header--empty {
+  min-height: 0;
+  margin-bottom: 0;
 }
 
 .sb-large-header__text {
@@ -52,7 +59,8 @@
 }
 
 .sb-large-header__subtitle {
-  margin-top: var(--space-1);
+  margin: 0;
+  font-weight: var(--weight-semibold);
   color: var(--color-text-secondary);
   font-size: var(--text-md);
   line-height: var(--leading-snug);

@@ -41,7 +41,9 @@ export function TopBar({ title, onBack, backLabel = 'Terug', actions = [], class
           <ChevronLeft />
         </IconButton>
       )}
-      {title ? <h1 className="sb-top-bar__title">{title}</h1> : <span className="sb-top-bar__title" />}
+      {/* The title is only for screen readers; the screens show no visible top title. */}
+      {title && <h1 className="sb-visually-hidden">{title}</h1>}
+      <span className="sb-top-bar__title" />
       {actions.length > 0 && (
         <GlassPill className="sb-top-bar__actions">
           {actions.map((action) => (
@@ -80,10 +82,17 @@ export interface LargeHeaderProps {
  */
 export function LargeHeader({ title, subtitle, trailing, leading, className }: LargeHeaderProps) {
   return (
-    <header className={cx('sb-large-header', className)}>
+    <header
+      className={cx(
+        'sb-large-header',
+        subtitle == null && leading == null && trailing == null && 'sb-large-header--empty',
+        className,
+      )}
+    >
+      {/* No visible page title: the heading stays for screen readers only. */}
+      <h1 className="sb-visually-hidden">{title}</h1>
       {leading != null && <div className="sb-large-header__leading">{leading}</div>}
       <div className="sb-large-header__text">
-        <h1 className="sb-large-header__title">{title}</h1>
         {subtitle != null && <p className="sb-large-header__subtitle">{subtitle}</p>}
       </div>
       {trailing != null && <div className="sb-large-header__trailing">{trailing}</div>}
