@@ -17,6 +17,12 @@ export interface ScanResult {
   subjectName?: string;
   kind?: ExamKind;
   title?: string;
+  /** "Weging 2", "telt 3x". */
+  weight?: number;
+  /** What to learn, one item per entry ("Hoofdstuk 4", "Begrippenlijst"). */
+  topics?: string[];
+  /** Useful remarks such as "Rekenmachine meenemen". */
+  notes?: string[];
   /** The lines this result came from, to show when there are several. */
   context: string;
 }
@@ -309,6 +315,104 @@ function findTitle(text: string): string | undefined {
   return `Hoofdstuk ${nums}`;
 }
 
+// ───────────────────────── weight, material, notes ─────────────────────────
+
+function findWeight(text: string): number | undefined {
+  const lower = fold(text);
+  const m =
+    lower.match(/weging\s*[:=]?\s*(\d{1,2})(?![\d.,]*\s*%)/) ??
+    lower.match(/telt\s*(\d{1,2})\s*(?:x|keer|maal)/) ??
+    lower.match(/(\d{1,2})\s*x\s*(?:meetellen|tellen|weging)/);
+  if (!m) return undefined;
+  const n = Number(m[1]);
+  return n >= 1 && n <= 10 ? n : undefined;
+}
+
+const MATERIAL_LABEL =
+  /^(?:leerstof|lesstof|stof|te leren|leren|inhoud|onderwerpen?|kennen|toetsstof|wat moet je kennen)\s*[:\-–]\s*(.*)$/i;
+const FIELD_LABEL =
+  /^(?:datum|tijd|lokaal|locatie|plaats|weging|vak|soort|opmerkingen?|let op|hulpmiddelen|meenemen|nb|n\.b\.|toets|duur)\b/i;
+const MATERIAL_HINT =
+  /(hoofdstuk|hst\.?|hfst|(?<![\p{L}])h\s?\d|§|paragraaf|par\.|blz|bladzijde|pagina|(?<![\p{L}])p\.?\s?\d|begrippen|woordjes|woordenlijst|grammatica|werkwoorden|unit|thema|module|lesbrief|opgaven|samenvatting|aantekeningen|leesboek|formules|theorie|reader|dictaat|sheets|chapter|lesson|(?<![\p{L}])les\s?\d)/iu;
+const CHAPTERS =
+  /(?:hoofdstuk(?:ken)?|hst\.?|hfst\.?|chapter|(?<![\p{L}])h)\s*(\d{1,2}(?:\s*(?:-|–|t\/m|tm|tot en met|en|&|,)\s*\d{1,2})*)(?![\d.])/iu;
+const NOTE_LINE =
+  /(let op|opmerking|n\.?b\.?\s|hulpmiddel|meenemen|mee nemen|neem .* mee|toegestaan|rekenmachine|woordenboek|bijzonderheden|binas|grafische)/i;
+
+/** "4 t/m 6" → [4, 5, 6]; "4 en 5" → [4, 5]. Undefined for silly ranges. */
+function chapterNumbers(spec: string): number[] | undefined {
+  const parts = spec
+    .replace(/\s*(?:-|–|t\/m|tm|tot en met)\s*/g, '..')
+    .split(/\s*(?:,|en|&)\s*/);
+  const out: number[] = [];
+  for (const part of parts) {
+    const [a, b] = part.split('..').map((x) => Number(x.trim()));
+    if (!Number.isFinite(a)) return undefined;
+    if (b === undefined || !Number.isFinite(b)) out.push(a);
+    else {
+      if (b < a || b - a > 12) return undefined;
+      for (let n = a; n <= b; n++) out.push(n);
+    }
+  }
+  return out.length > 0 && out.length <= 15 ? out : undefined;
+}
+
+function capitalize(s: string): string {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+/** One material line or piece into topics; chapter references become one topic per chapter. */
+function toTopics(piece: string): string[] {
+  const clean = piece.replace(/^[\s\-–•*·>]+/, '').replace(/[\s.;:]+$/, '').trim();
+  if (clean.length < 2) return [];
+  const m = clean.match(CHAPTERS);
+  if (m && m.index !== undefined) {
+    const rest = (clean.slice(0, m.index) + clean.slice(m.index + m[0].length)).replace(/[^\p{L}\d§]/gu, '');
+    const nums = chapterNumbers(m[1]);
+    // Only the chapter reference (perhaps with a subject or "toets" around it): split it up.
+    if (nums && !MATERIAL_HINT.test(rest)) return nums.map((n) => `Hoofdstuk ${n}`);
+  }
+  return [capitalize(clean.slice(0, 80))];
+}
+
+function findTopics(lines: string[], subjectWords: string[], today: ISODate): string[] {
+  const out: string[] = [];
+  const push = (items: string[]) => {
+    for (const t of items) if (!out.some((o) => o.toLowerCase() === t.toLowerCase())) out.push(t);
+  };
+  const labelled = lines.findIndex((l) => MATERIAL_LABEL.test(l));
+  if (labelled >= 0) {
+    const first = lines[labelled].match(MATERIAL_LABEL)![1];
+    const block = [first];
+    for (const l of lines.slice(labelled + 1, labelled + 16)) {
+      if (FIELD_LABEL.test(l) || NOTE_LINE.test(l) || findDates(l, today).length > 0) break;
+      block.push(l);
+    }
+    for (const line of block) for (const piece of line.split(/[;,•]/)) push(toTopics(piece));
+    return out.slice(0, 30);
+  }
+  for (const line of lines) {
+    if (!MATERIAL_HINT.test(line) || NOTE_LINE.test(line)) continue;
+    if (/^(?:datum|tijd|lokaal|locatie|weging)\b/i.test(line)) continue;
+    // Leave out the subject and kind words around a heading like "Toets Biologie H4 en 5".
+    let rest = line;
+    for (const w of [...subjectWords, 'toets', 'proefwerk', 'so', 'schriftelijke overhoring', 'mondeling', 'tentamen']) {
+      rest = rest.replace(new RegExp(`(?<![\\p{L}])${w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![\\p{L}])`, 'giu'), ' ');
+    }
+    for (const d of findDates(rest, today)) rest = rest.slice(0, d.start) + rest.slice(d.end);
+    for (const piece of rest.split(/[;•]/)) push(toTopics(piece.replace(/\s+/g, ' ')));
+  }
+  return out.slice(0, 30);
+}
+
+function findNotes(lines: string[]): string[] {
+  return lines
+    .filter((l) => NOTE_LINE.test(l))
+    .map((l) => capitalize(l.replace(/^(?:opmerkingen?|let op|nb|n\.b\.)\s*[:!]?\s*/i, '').trim()))
+    .filter((l) => l.length > 2)
+    .slice(0, 4);
+}
+
 // ───────────────────────── main ─────────────────────────
 
 function scanBlock(lines: string[], options: ScanOptions): ScanResult {
@@ -340,6 +444,16 @@ function scanBlock(lines: string[], options: ScanOptions): ScanResult {
   if (location) result.location = location;
   const kind = findKind(text);
   if (kind) result.kind = kind;
+  const weight = findWeight(text);
+  if (weight) result.weight = weight;
+  const subjectWords = [
+    ...options.subjects.filter((s) => s.id === result.subjectId).map((s) => s.name),
+    ...(result.subjectName ? [result.subjectName] : []),
+  ];
+  const topics = findTopics(lines, subjectWords, options.today);
+  if (topics.length > 0) result.topics = topics;
+  const notes = findNotes(lines);
+  if (notes.length > 0) result.notes = notes;
   const title = findTitle(text);
   if (title) result.title = title;
   return result;

@@ -24,7 +24,25 @@ Lokaal: B204`;
       subjectId: 's-bio',
       kind: 'toets',
       title: 'Hoofdstuk 4 en 5',
+      topics: ['Hoofdstuk 4', 'Hoofdstuk 5'],
     });
+  });
+
+  it('reads weight, a material list and remarks', () => {
+    const text = `Proefwerk Geschiedenis
+Datum: 3 december
+Weging: 3
+Leerstof:
+H2 t/m 4
+§5.1 en 5.2
+Begrippenlijst, tijdlijn
+Let op: rekenmachine niet toegestaan`;
+    const [r] = scanExamText(text, { today, subjects });
+    expect(r.weight).toBe(3);
+    expect(r.topics).toEqual(['Hoofdstuk 2', 'Hoofdstuk 3', 'Hoofdstuk 4', '§5.1 en 5.2', 'Begrippenlijst', 'Tijdlijn']);
+    expect(r.notes).toEqual(['Rekenmachine niet toegestaan']);
+    expect(scanExamText('Toets Engels 3/12 telt 2x', { today, subjects })[0].weight).toBe(2);
+    expect(scanExamText('Toets Engels 3/12 weging 20%', { today, subjects })[0].weight).toBeUndefined();
   });
 
   it('reads a note with a written month and no year', () => {

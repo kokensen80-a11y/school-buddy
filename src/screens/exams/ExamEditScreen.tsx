@@ -32,6 +32,7 @@ import { parseTopicLines, toTopicDrafts } from './parseTopics';
 import { ListDefaults } from './TopicSheets';
 import { plural } from './examHelpers';
 import { PhotoScan, foundSummary } from './PhotoScan';
+import { PendingFiles } from './MaterialFiles';
 import type { ScanResult } from '../../lib/examScan';
 import './exams.css';
 
@@ -95,18 +96,20 @@ export default function ExamEditScreen({ examId }: { examId?: ID }) {
   const [minutes, setMinutes] = useState(45);
   const [difficulty, setDifficulty] = useState<Difficulty>(2);
   const [photo, setPhoto] = useState<File | null>(null);
+  const [files, setFiles] = useState<File[]>([]);
   const [scanned, setScanned] = useState<string | null>(null);
   const [subjectSuggestion, setSubjectSuggestion] = useState<{ name: string; n: number } | null>(null);
 
   /** The form as it was before the first scan, so a second photo starts clean. */
-  const [preScan, setPreScan] = useState<FormState | null>(null);
+  const [preScan, setPreScan] = useState<{ form: FormState; topics: string } | null>(null);
 
   const applyScan = (r: ScanResult, file: File) => {
     const subjectName = subjects.find((s) => s.id === r.subjectId)?.name ?? r.subjectName;
-    const base = preScan ?? form;
-    if (!preScan) setPreScan(form);
+    const base = preScan ?? { form, topics: topicsText };
+    if (!preScan) setPreScan(base);
+    setTopicsText(base.topics.trim() ? base.topics : (r.topics ?? []).join('\n'));
     setForm(() => {
-      const f = base;
+      const f = base.form;
       const kind = r.kind ?? f.kind;
       return {
         ...f,
@@ -117,7 +120,10 @@ export default function ExamEditScreen({ examId }: { examId?: ID }) {
         location: r.location ?? f.location,
         kind,
         title: f.title || r.title || (subjectName ? `${EXAM_KINDS[kind].label} ${subjectName}` : ''),
-        notes: f.notes || (r.endTime ? `Tot ${r.endTime}` : ''),
+        weight: r.weight ?? f.weight,
+        notes:
+          f.notes ||
+          [r.endTime ? `Tot ${r.endTime}` : '', ...(r.notes ?? [])].filter(Boolean).join('\n'),
       };
     });
     if (!r.subjectId && r.subjectName) setSubjectSuggestion((s) => ({ name: r.subjectName!, n: (s?.n ?? 0) + 1 }));
@@ -190,7 +196,13 @@ export default function ExamEditScreen({ examId }: { examId?: ID }) {
         toast.error(result.error);
         return;
       }
-      if (photo) await actions.addAttachment(result.exam.id, photo, photo.name || 'Foto van de toets');
+      const toStore = photo ? [photo, ...files] : files;
+      let failed = 0;
+      for (const file of toStore) {
+        const stored = await actions.addAttachment(result.exam.id, file, file.name || 'Foto van de toets');
+        if (!stored.ok) failed++;
+      }
+      if (failed > 0) toast.error(failed === 1 ? 'Eén bestand kon niet bewaard worden.' : `${failed} bestanden konden niet bewaard worden.`);
       toast.success('Toets toegevoegd. Je planning is gemaakt.');
       navigate({ name: 'toets', id: result.exam.id }, { replace: true });
     } else {
@@ -313,6 +325,8 @@ export default function ExamEditScreen({ examId }: { examId?: ID }) {
             </Stack>
           </Section>
         )}
+
+        {isNew && <PendingFiles files={files} onChange={setFiles} />}
 
         <Button type="submit" size="lg" block loading={busy}>
           {isNew ? 'Toets toevoegen' : 'Opslaan'}

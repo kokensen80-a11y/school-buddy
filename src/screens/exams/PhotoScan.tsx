@@ -13,6 +13,9 @@ export function foundSummary(r: ScanResult): string {
     r.time && 'tijd',
     (r.subjectId || r.subjectName) && 'vak',
     r.location && 'lokaal',
+    r.weight && 'weging',
+    r.topics?.length && 'leerstof',
+    r.notes?.length && 'opmerkingen',
   ].filter(Boolean) as string[];
   if (parts.length <= 1) return parts.join('');
   return `${parts.slice(0, -1).join(', ')} en ${parts[parts.length - 1]}`;
