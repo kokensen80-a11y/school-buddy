@@ -162,8 +162,8 @@
   /* Distance of the floating top bar from the top edge. */
   --topbar-top: max(12px, calc(var(--safe-top) + 4px));
   --tabbar-height: 64px;
-  /* The tab bar is a flat bar on the bottom edge; this is the room under it. */
-  --tabbar-bottom: var(--safe-bottom);
+  /* The tab bar floats above the bottom edge, partly inside the home-indicator area. */
+  --tabbar-bottom: max(14px, calc(var(--safe-bottom) - 6px));
 }
 
 /*

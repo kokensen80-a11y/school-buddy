@@ -347,3 +347,19 @@
   transform: rotate(-8deg);
   filter: drop-shadow(0 10px 14px rgb(0 0 0 / 0.18));
 }
+
+/* Keep number and unit, and dot and label, on one line in the narrow tiles. */
+.sb-tile {
+  padding: 14px 10px 12px;
+}
+
+.sb-tile__num {
+  white-space: nowrap;
+  font-size: 26px;
+}
+
+.sb-tile__label {
+  gap: 5px;
+  font-size: 14px;
+  white-space: nowrap;
+}
