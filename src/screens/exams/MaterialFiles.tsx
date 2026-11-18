@@ -121,7 +121,7 @@ function PickButton({ onPick, label = 'Bestand toevoegen', loading }: { onPick: 
   );
 }
 
-const HINT = 'Samenvattingen, sheets, een studiewijzer of foto’s uit je boek. Ze blijven op je apparaat.';
+const HINT = 'Samenvattingen, collegeslides, de studiehandleiding of foto’s uit je boek. Ze blijven op je apparaat.';
 
 /** Files picked while adding a new exam; they are stored when the exam is saved. */
 export function PendingFiles({ files, onChange }: { files: File[]; onChange: (files: File[]) => void }) {

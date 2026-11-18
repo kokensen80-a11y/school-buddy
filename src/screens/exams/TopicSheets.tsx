@@ -110,13 +110,13 @@ export function AddTopicsSheet({ exam, open, onClose }: { exam: Exam; open: bool
       <Stack gap={5}>
         <Field
           label="Onderdelen"
-          hint="Eén onderdeel per regel. Je kunt ook een lijst uit je studiewijzer plakken."
+          hint="Eén onderdeel per regel. Je kunt ook een lijst uit je studiehandleiding plakken."
         >
           <TextArea
             value={text}
             onChange={setText}
             minRows={4}
-            placeholder={'Hoofdstuk 3\n§4.1 en §4.2 (30 min)\nBegrippenlijst'}
+            placeholder={'Hoofdstuk 3 en 4\nCollegeslides week 1 t/m 4 (60 min)\nBegrippenlijst'}
           />
         </Field>
         {parsed.length > 0 && (

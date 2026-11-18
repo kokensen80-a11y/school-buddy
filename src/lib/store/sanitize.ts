@@ -31,7 +31,7 @@ import type {
 import { isValidISODate, isValidTime } from '../date';
 import { DEFAULT_PREFS, createEmptyUserData } from '../defaults';
 import {
-  EXAM_KIND_ORDER,
+  ALL_EXAM_KINDS,
   PLAN_STYLE_ORDER,
   SESSION_KINDS,
   STUDY_METHOD_ORDER,
@@ -278,7 +278,7 @@ function sanitizeExam(
     id,
     subjectId,
     title,
-    kind: oneOf(EXAM_KIND_ORDER, raw.kind) ?? 'toets',
+    kind: oneOf(ALL_EXAM_KINDS, raw.kind) ?? 'toets',
     date: raw.date,
     ...optionalExamFields(raw),
     topics: uniqueById(keepValid(raw.topics, sanitizeTopic)),

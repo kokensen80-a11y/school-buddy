@@ -85,7 +85,7 @@ export function StudyTimesEditor({ value, onChange }: { value: Times; onChange: 
   return (
     <Stack gap={5}>
       <div className="sb-prefs-two">
-        <Field label="Schooldagen vanaf">
+        <Field label="Doordeweeks vanaf">
           <TimeInput value={value.weekdayStart} onChange={(v) => isValidTime(v) && set({ weekdayStart: v })} />
         </Field>
         <Field label="Weekend vanaf">

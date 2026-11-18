@@ -44,14 +44,11 @@ export const EXAM_KINDS: Record<ExamKind, { label: string; short: string }> = {
   deadline: { label: 'Inleveropdracht', short: 'Inleveren' },
 };
 
-export const EXAM_KIND_ORDER: ExamKind[] = [
-  'toets',
-  'so',
-  'tentamen',
-  'mondeling',
-  'presentatie',
-  'deadline',
-];
+/** The kinds offered when adding an exam. 'so' stays readable for older data but is not offered. */
+/** Every kind that may be stored, also the ones no longer offered. */
+export const ALL_EXAM_KINDS = Object.keys(EXAM_KINDS) as ExamKind[];
+
+export const EXAM_KIND_ORDER: ExamKind[] = ['tentamen', 'toets', 'deadline', 'presentatie', 'mondeling'];
 
 export const STUDY_METHODS: Record<StudyMethod, { label: string; description: string }> = {
   lezen: { label: 'Lezen', description: 'De stof rustig doorlezen en markeren' },

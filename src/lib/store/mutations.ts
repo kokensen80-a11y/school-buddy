@@ -20,7 +20,7 @@ import type {
   UserData,
 } from '../../types';
 import { isValidISODate, isValidTime } from '../date';
-import { EXAM_KIND_ORDER, SUBJECT_COLOR_ORDER } from '../labels';
+import { ALL_EXAM_KINDS, SUBJECT_COLOR_ORDER } from '../labels';
 import { MESSAGES, fail } from './messages';
 import {
   cleanGrade,
@@ -186,7 +186,7 @@ function buildExam(
       id: fixed.id,
       subjectId: fields.subjectId,
       title,
-      kind: oneOf(EXAM_KIND_ORDER, fields.kind) ?? 'toets',
+      kind: oneOf(ALL_EXAM_KINDS, fields.kind) ?? 'toets',
       date: fields.date,
       ...optionalExamFields(fields),
       topics: fixed.topics,

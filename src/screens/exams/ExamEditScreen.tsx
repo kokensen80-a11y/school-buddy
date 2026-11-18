@@ -55,7 +55,7 @@ function fromExam(exam: Exam | undefined, presetDate: string): FormState {
   return {
     subjectId: exam?.subjectId ?? '',
     title: exam?.title ?? '',
-    kind: exam?.kind ?? 'toets',
+    kind: exam?.kind ?? 'tentamen',
     date: exam?.date ?? presetDate,
     time: exam?.time ?? '',
     location: exam?.location ?? '',
@@ -130,10 +130,12 @@ export default function ExamEditScreen({ examId }: { examId?: ID }) {
         time: r.time ?? f.time,
         location: r.location ?? f.location,
         kind,
+        // "Kennistoets Strategie Overheid"; without a subject the chapters or the date.
         title:
           f.title ||
-          r.title ||
-          [EXAM_KINDS[kind].label, subjectName ?? (r.date ? formatDayMonth(r.date) : '')].filter(Boolean).join(' '),
+          (subjectName
+            ? `${r.kindWord ?? EXAM_KINDS[kind].label} ${subjectName}`
+            : r.title || [r.kindWord ?? EXAM_KINDS[kind].label, r.date ? formatDayMonth(r.date) : ''].filter(Boolean).join(' ')),
         weight: r.weight ?? f.weight,
         notes:
           f.notes ||
@@ -266,13 +268,19 @@ export default function ExamEditScreen({ examId }: { examId?: ID }) {
           <TextInput
             value={form.title}
             onChange={(v) => set('title', v)}
-            placeholder="Bijvoorbeeld Hoofdstuk 3 en 4"
+            placeholder="Bijvoorbeeld Tentamen Marketing 1"
             aria-invalid={errors.title ? true : undefined}
           />
         </Field>
 
         <Field label="Soort">
-          <Select value={form.kind} options={KIND_OPTIONS} onChange={(v) => set('kind', v)} />
+          <Select
+            value={form.kind}
+            options={
+              KIND_OPTIONS.some((o) => o.value === form.kind)
+                ? KIND_OPTIONS
+                : [...KIND_OPTIONS, { value: form.kind, label: EXAM_KINDS[form.kind].label }]
+            } onChange={(v) => set('kind', v)} />
         </Field>
 
         <div className="sb-exam-form__row">
@@ -293,7 +301,7 @@ export default function ExamEditScreen({ examId }: { examId?: ID }) {
         </div>
 
         <Field label="Lokaal of plek" optional>
-          <TextInput value={form.location} onChange={(v) => set('location', v)} placeholder="Bijvoorbeeld B204" />
+          <TextInput value={form.location} onChange={(v) => set('location', v)} placeholder="Bijvoorbeeld DMH A3.26" />
         </Field>
 
         <Field label="Weging" hint="Hoe vaak telt dit cijfer mee?">
@@ -321,7 +329,7 @@ export default function ExamEditScreen({ examId }: { examId?: ID }) {
                 value={topicsText}
                 onChange={setTopicsText}
                 minRows={4}
-                placeholder={'Hoofdstuk 3\n§4.1 en §4.2 (30 min)\nBegrippenlijst'}
+                placeholder={'Hoofdstuk 3 en 4\nCollegeslides week 1 t/m 4 (60 min)\nBegrippenlijst'}
               />
               {parsed.length > 0 && (
                 <>
@@ -423,7 +431,7 @@ function SubjectPicker({
             <TextInput
               value={name}
               onChange={setName}
-              placeholder="Naam van het vak, bijvoorbeeld Biologie"
+              placeholder="Naam van het vak, bijvoorbeeld Marketing"
               aria-label="Naam van het nieuwe vak"
               autoCapitalize="words"
               onKeyDown={(e) => {

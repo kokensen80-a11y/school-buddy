@@ -191,7 +191,7 @@ export default function OnboardingScreen() {
               />
               <ListRow
                 title="Starttijden"
-                subtitle={`Schooldagen ${draft.weekdayStart} · weekend ${draft.weekendStart}`}
+                subtitle={`Doordeweeks ${draft.weekdayStart} · weekend ${draft.weekendStart}`}
                 chevron
                 onClick={() => jumpTo('wanneer')}
               />

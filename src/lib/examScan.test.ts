@@ -71,6 +71,47 @@ Let op: rekenmachine niet toegestaan`;
     expect(one('Info\nToets 4/12').subjectName).toBeUndefined();
   });
 
+  it('reads an hbo timetable popup', () => {
+    const text = `O [BYOD] Strategie Overheid - tweede gelegenheid (3VYZ-h) (3225WOSCKT)
+Kennistoets
+Dinsdag 1 december 2026 17:20 - 19:30
+Vakcode
+FGSB/SMO_3200WOSC25
+Locatie(s)
+DMH A3.26
+DMH A3.34
+Docent(en)
+(Martin) Breedijk, M.N.
+(Roberto) Branco Martins, R.C.
+Toetsbureau DMH
+Klas(sen)/Groep(en)
+FGSB-SMO-3V FGSB-SMO-3Y FGSB-SMO-3Z
+Opmerking
+Let op: er kunnen nog wijzigingen optreden. (check de roosterwebsite regelmatig)
+Sluiten`;
+    const results = scanExamText(text, { today, subjects: [] });
+    expect(results).toHaveLength(1);
+    expect(results[0]).toMatchObject({
+      subjectName: 'Strategie Overheid',
+      date: '2026-12-01',
+      time: '17:20',
+      endTime: '19:30',
+      location: 'DMH A3.26 en A3.34',
+      kind: 'tentamen',
+      kindWord: 'Kennistoets',
+      notes: ['Laptop meenemen (BYOD)', 'Herkansing'],
+    });
+    expect(results[0].topics).toBeUndefined();
+  });
+
+  it('reads hbo course names after the kind and from course codes', () => {
+    const one = (t: string) => scanExamText(t, { today, subjects: [] })[0];
+    expect(one('Tentamen Financieel management 1 op 12 januari').subjectName).toBe('Financieel management 1');
+    expect(one('SMO1-MAR Sportmarketing 2 | 14-01-2027').subjectName).toBe('Sportmarketing 2');
+    expect(one('© Tentamen Marketing 2\n12 januari').subjectName).toBe('Marketing 2');
+    expect(one('Cursus: Ondernemerschap\nDatum: 20 januari').subjectName).toBe('Ondernemerschap');
+  });
+
   it('does not take paragraph numbers or times for dates', () => {
     const [r] = scanExamText('Leren §4.1 en §4.2\nToets 9.30 uur', { today, subjects });
     expect(r.date).toBeUndefined();
