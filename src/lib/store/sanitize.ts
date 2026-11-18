@@ -249,9 +249,12 @@ function sanitizeAttachment(raw: unknown, fallbackNow: ISODateTime): AttachmentM
 /** The optional exam fields; whatever is empty or invalid is left out. */
 export function optionalExamFields(
   source: Raw,
-): Pick<Exam, 'time' | 'location' | 'weight' | 'notes' | 'grade'> {
-  const fields: Pick<Exam, 'time' | 'location' | 'weight' | 'notes' | 'grade'> = {};
-  if (isValidTime(source.time)) fields.time = source.time;
+): Pick<Exam, 'time' | 'endTime' | 'location' | 'weight' | 'notes' | 'grade'> {
+  const fields: Pick<Exam, 'time' | 'endTime' | 'location' | 'weight' | 'notes' | 'grade'> = {};
+  if (isValidTime(source.time)) {
+    fields.time = source.time;
+    if (isValidTime(source.endTime) && source.endTime > source.time) fields.endTime = source.endTime;
+  }
   const location = cleanText(source.location);
   if (location) fields.location = location;
   const weight = cleanWeight(source.weight);

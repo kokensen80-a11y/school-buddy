@@ -174,6 +174,9 @@ function buildExam(
   if (fields.time !== undefined && fields.time !== '' && !isValidTime(fields.time)) {
     return fail(MESSAGES.timeInvalid);
   }
+  if (fields.endTime !== undefined && fields.endTime !== '' && !isValidTime(fields.endTime)) {
+    return fail(MESSAGES.timeInvalid);
+  }
   if (fields.weight !== undefined && cleanWeight(fields.weight) === undefined) {
     return fail(MESSAGES.weightInvalid);
   }

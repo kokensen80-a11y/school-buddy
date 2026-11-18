@@ -42,6 +42,7 @@ interface FormState {
   kind: ExamKind;
   date: string;
   time: string;
+  endTime: string;
   location: string;
   weight: number;
   notes: string;
@@ -58,6 +59,7 @@ function fromExam(exam: Exam | undefined, presetDate: string): FormState {
     kind: exam?.kind ?? 'tentamen',
     date: exam?.date ?? presetDate,
     time: exam?.time ?? '',
+    endTime: exam?.endTime ?? '',
     location: exam?.location ?? '',
     weight: exam?.weight ?? 1,
     notes: exam?.notes ?? '',
@@ -128,6 +130,7 @@ export default function ExamEditScreen({ examId }: { examId?: ID }) {
         subjectId: subjectId ?? (r.subjectName ? '' : f.subjectId),
         date: r.date ?? f.date,
         time: r.time ?? f.time,
+        endTime: r.endTime ?? (r.time ? '' : f.endTime),
         location: r.location ?? f.location,
         kind,
         // "Kennistoets Strategie Overheid"; without a subject the chapters or the date.
@@ -139,7 +142,7 @@ export default function ExamEditScreen({ examId }: { examId?: ID }) {
         weight: r.weight ?? f.weight,
         notes:
           f.notes ||
-          [r.endTime ? `Tot ${r.endTime}` : '', ...(r.notes ?? [])].filter(Boolean).join('\n'),
+          (r.notes ?? []).join('\n'),
       };
     });
     if (!subjectId && r.subjectName) setSubjectSuggestion((s) => ({ name: r.subjectName!, n: (s?.n ?? 0) + 1 }));
@@ -197,6 +200,7 @@ export default function ExamEditScreen({ examId }: { examId?: ID }) {
       kind: form.kind,
       date: form.date,
       time: form.time || undefined,
+      endTime: (form.time && form.endTime > form.time && form.endTime) || undefined,
       location: form.location.trim() || undefined,
       weight: form.weight,
       notes: form.notes.trim() || undefined,
@@ -283,20 +287,28 @@ export default function ExamEditScreen({ examId }: { examId?: ID }) {
             } onChange={(v) => set('kind', v)} />
         </Field>
 
+        <Field
+          label="Datum"
+          error={errors.date}
+          hint={form.date && form.date < today ? 'Deze datum is al geweest.' : undefined}
+        >
+          <DateInput
+            value={form.date}
+            onChange={(v) => set('date', v)}
+            aria-invalid={errors.date ? true : undefined}
+          />
+        </Field>
+
         <div className="sb-exam-form__row">
-          <Field
-            label="Datum"
-            error={errors.date}
-            hint={form.date && form.date < today ? 'Deze datum is al geweest.' : undefined}
-          >
-            <DateInput
-              value={form.date}
-              onChange={(v) => set('date', v)}
-              aria-invalid={errors.date ? true : undefined}
-            />
-          </Field>
-          <Field label="Tijd" optional>
+          <Field label="Begint" optional>
             <TimeInput value={form.time} onChange={(v) => set('time', v)} />
+          </Field>
+          <Field
+            label="Eindigt"
+            optional
+            hint={form.endTime && form.time && form.endTime <= form.time ? 'Moet na de begintijd zijn.' : undefined}
+          >
+            <TimeInput value={form.endTime} onChange={(v) => set('endTime', v)} />
           </Field>
         </div>
 

@@ -177,7 +177,7 @@ function examEvent(exam: Exam, subject: string | undefined, stamp: string): Cale
   const when = exam.time
     ? [
         `DTSTART:${localStamp(exam.date, startMinutes)}`,
-        `DTEND:${localStamp(exam.date, startMinutes + EXAM_DURATION_MINUTES)}`,
+        `DTEND:${localStamp(exam.date, exam.endTime ? parseTime(exam.endTime) : startMinutes + EXAM_DURATION_MINUTES)}`,
       ]
     : [
         `DTSTART;VALUE=DATE:${compact(exam.date)}`,

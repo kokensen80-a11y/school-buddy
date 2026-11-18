@@ -11,11 +11,12 @@ import {
   Section,
   SubjectDot,
 } from '../../components/ui';
-import { useExams, useSubjects } from '../../lib/store';
+import { useExams, useSessions, useSubjects, useWarnings } from '../../lib/store';
 import { useToday } from '../../lib/clock';
-import { addDays, formatRelative } from '../../lib/date';
+import { formatDateLong, formatRelative } from '../../lib/date';
 import { navigate } from '../../lib/router';
-import type { Exam, Subject } from '../../types';
+import type { Exam, ISODate, Subject } from '../../types';
+import { ExamCard } from './ExamCard';
 import { examKindLabel, examWhen, pastExams, plural, subjectOf, upcomingExams } from './examHelpers';
 
 /** Tab root: all exams, grouped by when they are. */
@@ -23,12 +24,17 @@ export default function ExamsScreen() {
   const exams = useExams();
   const subjects = useSubjects();
   const today = useToday();
+  const sessions = useSessions();
+  const warnings = useWarnings();
   const [showAllPast, setShowAllPast] = useState(false);
 
   const upcoming = upcomingExams(exams, today);
-  const weekEnd = addDays(today, 7);
-  const thisWeek = upcoming.filter((e) => e.date < weekEnd);
-  const later = upcoming.filter((e) => e.date >= weekEnd);
+  const days: { date: ISODate; exams: Exam[] }[] = [];
+  for (const exam of upcoming) {
+    const last = days[days.length - 1];
+    if (last && last.date === exam.date) last.exams.push(exam);
+    else days.push({ date: exam.date, exams: [exam] });
+  }
   const past = pastExams(exams, today);
   const visiblePast = showAllPast ? past : past.slice(0, 3);
 
@@ -54,15 +60,32 @@ export default function ExamsScreen() {
         />
       ) : (
         <>
-          {thisWeek.length > 0 && (
-            <Section label="Komende 7 dagen">
-              <ExamList exams={thisWeek} subjects={subjects} today={today} />
-            </Section>
-          )}
-          {later.length > 0 && (
-            <Section label="Later">
-              <ExamList exams={later} subjects={subjects} today={today} />
-            </Section>
+          {days.map((day) => (
+            <section key={day.date} className="sb-xday" aria-labelledby={`dag-${day.date}`}>
+              <h2 id={`dag-${day.date}`} className="sb-xday__title">
+                {formatDateLong(day.date, today)}
+              </h2>
+              <div className="sb-xday__cards">
+                {day.exams.map((exam) => (
+                  <ExamCard
+                    key={exam.id}
+                    exam={exam}
+                    subject={subjectOf(subjects, exam)}
+                    sessions={sessions}
+                    warnings={warnings}
+                    today={today}
+                  />
+                ))}
+              </div>
+            </section>
+          ))}
+          {upcoming.length === 0 && (
+            <EmptyState
+              icon={<GraduationCap />}
+              title="Geen toetsen gepland"
+              text="Er staat niets meer op de planning. Voeg je volgende toets toe."
+              action={<Button onClick={() => navigate({ name: 'toets-nieuw' })}>Toets toevoegen</Button>}
+            />
           )}
           {past.length > 0 && (
             <Section

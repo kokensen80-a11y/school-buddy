@@ -69,6 +69,8 @@ export interface Exam {
   date: ISODate;
   /** Start time of the exam, if known. */
   time?: TimeOfDay;
+  /** End time, if known; only kept when there is a start time before it. */
+  endTime?: TimeOfDay;
   location?: string;
   /** Weging, e.g. 2 for "telt 2x". */
   weight?: number;
