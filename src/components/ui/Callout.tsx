@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
-import { CircleCheck, Info, TriangleExclamationPoint } from 'lucide-react';
+import { CircleCheck, Info, TriangleExclamationPoint, X } from 'lucide-react';
+import { IconButton } from './IconButton';
 import { cx } from './cx';
 import './Callout.css';
 
@@ -14,6 +15,10 @@ export interface CalloutProps {
   icon?: ReactNode;
   /** Usually a small `Button`, shown under the message. */
   action?: ReactNode;
+  /** Shows a close button in the top right corner. */
+  onDismiss?: () => void;
+  /** Accessible name of the close button. */
+  dismissLabel?: string;
   className?: string;
 }
 
@@ -25,9 +30,23 @@ const TONE_ICON = {
 } as const;
 
 /** Inline notice inside a screen, e.g. a planning warning ("Te weinig tijd voor deze toets"). */
-export function Callout({ tone = 'info', title, children, icon, action, className }: CalloutProps) {
+export function Callout({
+  tone = 'info',
+  title,
+  children,
+  icon,
+  action,
+  onDismiss,
+  dismissLabel = 'Melding sluiten',
+  className,
+}: CalloutProps) {
   return (
-    <div className={cx('sb-callout', `sb-callout--${tone}`, className)}>
+    <div className={cx('sb-callout', `sb-callout--${tone}`, onDismiss && 'sb-callout--dismissible', className)}>
+      {onDismiss && (
+        <IconButton variant="plain" size="sm" className="sb-callout__close" aria-label={dismissLabel} onClick={onDismiss}>
+          <X />
+        </IconButton>
+      )}
       <span className="sb-callout__icon" aria-hidden="true">
         {icon ?? TONE_ICON[tone]}
       </span>

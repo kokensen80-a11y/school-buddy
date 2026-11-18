@@ -91,7 +91,7 @@ export default function HomeScreen() {
         ))}
 
         <div className="sb-bento__span">
-          <PlanWarnings />
+          <PlanWarnings dismissible />
         </div>
 
         <WeekTicks today={today} />

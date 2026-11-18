@@ -1,5 +1,6 @@
 .sb-callout {
   --sb-callout-color: var(--brand);
+  position: relative;
   display: flex;
   gap: var(--space-3);
   padding: var(--space-4);
@@ -59,4 +60,15 @@
 
 .sb-callout__action {
   margin-top: var(--space-3);
+}
+
+.sb-callout--dismissible .sb-callout__body {
+  padding-right: 28px;
+}
+
+.sb-callout__close {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  color: var(--color-text-secondary);
 }
