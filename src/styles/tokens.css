@@ -54,12 +54,13 @@
   --brand-wash: linear-gradient(135deg, #efeaff 0%, #fbe9ff 50%, #ffe8ef 100%);
 
   /* ── Colour: dashboard tiles ───────────────────────────────── */
-  --tile-green: #12a150;
-  --tile-purple: #8676e8;
-  --tile-yellow: #f2b829;
-  --tile-blue: #5b9bf8;
-  --tile-blue-soft: #c9ddfc;
-  --tile-navy: #27349a;
+  /* Bright enough to read on glass over the night sky. */
+  --tile-green: #3ddc84;
+  --tile-purple: #ab9dff;
+  --tile-yellow: #ffcf4d;
+  --tile-blue: #6aa8ff;
+  --tile-blue-soft: rgb(255 255 255 / 0.2);
+  --tile-navy: #5b9bf8;
 
   /* ── Colour: subjects (same hex values as SUBJECT_COLORS) ──── */
   --subject-green: #1f9d55;
@@ -167,112 +168,123 @@
 }
 
 /*
- * Screens sit on a night sky that fades into a bright blue horizon, so text placed
- * straight on the page is white and the accent is white. White tiles and controls inside
- * a screen switch back to the dark-on-white tokens above. Sheets, toasts and the tab bar
- * live outside .sb-screen and keep the light tokens.
+ * Glass everywhere. The night sky shows through every surface: cards, tiles, forms,
+ * inputs, sheets and the tab bar are frosted, see-through glass with white text. The only
+ * solid white things are pills: primary buttons, selected chips, the + and calls to action.
  */
-.sb-screen {
+.sb-screen,
+.sb-sheet,
+.sb-tab-bar {
+  color-scheme: dark;
   --color-text: #ffffff;
   --color-text-secondary: rgb(255 255 255 / 0.76);
   --color-text-tertiary: rgb(255 255 255 / 0.52);
   --color-text-inverse: #0a0a0a;
+  --glass-fill: rgb(255 255 255 / 0.12);
   --glass-fill-strong: rgb(255 255 255 / 0.16);
   --glass-fill-subtle: rgb(255 255 255 / 0.08);
-  --glass-fill-inset: rgb(255 255 255 / 0.12);
-  --glass-border: rgb(255 255 255 / 0.2);
-  --color-separator: rgb(255 255 255 / 0.18);
+  --glass-fill-smoked: rgb(255 255 255 / 0.12);
+  --glass-fill-inset: rgb(255 255 255 / 0.1);
+  --glass-border: rgb(255 255 255 / 0.18);
+  --glass-highlight: rgb(255 255 255 / 0.35);
+  --color-separator: rgb(255 255 255 / 0.14);
   --color-accent: #ffffff;
   --color-on-accent: #0a0a0a;
   --color-focus-ring: #ffffff;
-  --color-surface: rgb(255 255 255 / 0.12);
+  --color-surface: rgb(255 255 255 / 0.1);
+  /* The see-through glass of a surface: a light sheen over a faint dark tint. */
+  --color-surface-raised: linear-gradient(160deg, rgb(255 255 255 / 0.14) 0%, rgb(255 255 255 / 0.05) 100%),
+    rgb(8 12 32 / 0.3);
   color: var(--color-text);
+}
+
+.sb-screen {
   /* Keeps white text readable where it passes the bright horizon band. */
   text-shadow: 0 1px 10px rgb(0 20 70 / 0.45);
 }
 
-.sb-screen
-  :is(
-    .sb-choice-chip,
-    .sb-exam-form,
-    .sb-card,
-    .sb-bento__card,
-    .sb-cal,
-    .sb-callout,
-    .sb-icon-button--glass,
-    .sb-glass-pill,
-    .sb-control,
-    .sb-stepper,
-    .sb-segmented,
-    .sb-file
-  ) {
-  --color-text: #0a0a0a;
-  --color-text-secondary: rgb(0 0 0 / 0.6);
-  --color-text-tertiary: rgb(0 0 0 / 0.42);
-  --color-text-inverse: #ffffff;
-  --glass-fill-strong: rgb(0 0 0 / 0.07);
-  --glass-fill-subtle: rgb(0 0 0 / 0.035);
-  --glass-fill-inset: rgb(0 0 0 / 0.045);
-  --glass-border: rgb(0 0 0 / 0.08);
-  --color-separator: rgb(0 0 0 / 0.09);
-  --color-accent: #0a0a0a;
-  --color-on-accent: #ffffff;
-  --color-focus-ring: #7c5cff;
-  --color-surface: #ececf1;
+/* Glass surfaces straight on the sky. */
+.sb-screen :is(.sb-card, .sb-bento__card, .sb-cal, .sb-exam-form, .sb-file) {
+  border: 1px solid rgb(255 255 255 / 0.16);
+  background: var(--color-surface-raised);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.18),
+    0 12px 32px -16px rgb(0 0 0 / 0.55);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  backdrop-filter: blur(22px) saturate(160%);
+  text-shadow: none;
+}
+
+.sb-screen .sb-exam-form {
+  padding: 20px;
+  border-radius: var(--radius-card);
+}
+
+/* Glass inside glass: a plain light fill, no second blur. */
+.sb-screen :is(.sb-card, .sb-bento__card, .sb-exam-form) :is(.sb-card, .sb-tile, .sb-file) {
+  border-color: rgb(255 255 255 / 0.1);
+  background: rgb(255 255 255 / 0.08);
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.sb-screen .sb-exam-form .sb-card {
+  /* Inner radius = form radius 28 minus form padding 20. */
+  border-radius: 8px;
+}
+
+/* Inputs, steppers, segmented controls and unselected chips: clear glass wells. */
+.sb-screen :is(.sb-control, .sb-stepper, .sb-segmented, .sb-choice-chip:not(.sb-choice-chip--selected)) {
+  border-color: rgb(255 255 255 / 0.16);
+  background-color: rgb(255 255 255 / 0.1);
   color: var(--color-text);
   text-shadow: none;
 }
 
-/* Form controls straight on the sky become white tiles too. */
-.sb-screen :is(.sb-control, .sb-stepper, .sb-segmented) {
-  border-color: transparent;
-  background-color: #ffffff;
-}
-
-.sb-screen .sb-file {
-  background: #ffffff;
-}
-
-/* Round glass buttons and choice chips on the sky are solid white tiles. */
-.sb-screen :is(.sb-icon-button--glass, .sb-glass-pill, .sb-choice-chip:not(.sb-choice-chip--selected)) {
-  background: #ffffff;
+/* Glass buttons and secondary buttons: see-through pills with white text. */
+.sb-screen :is(.sb-icon-button--glass, .sb-glass-pill, .sb-button--secondary, .sb-action-tile--secondary) {
+  border: 1px solid rgb(255 255 255 / 0.18);
+  background: rgb(255 255 255 / 0.12);
+  color: #ffffff;
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  backdrop-filter: blur(16px) saturate(160%);
+  text-shadow: none;
 }
 
 .sb-screen :is(.sb-xcard, .sb-banner, .sb-button, .sb-action-tile) {
   text-shadow: none;
 }
 
-/* The exam form is one big white tile; cards inside it are soft grey instead of raised. */
-.sb-screen .sb-exam-form {
-  padding: 20px;
-  border-radius: var(--radius-card);
-  background: #ffffff;
-  box-shadow: var(--shadow-card);
+/* Callouts: glass tinted with their tone. */
+.sb-screen .sb-callout {
+  border: 1px solid rgb(255 255 255 / 0.16);
+  background: rgb(124 92 255 / 0.18);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  backdrop-filter: blur(22px) saturate(160%);
+  text-shadow: none;
 }
 
-.sb-screen .sb-exam-form :is(.sb-control, .sb-stepper, .sb-segmented) {
-  background-color: #f2f2f5;
+.sb-screen .sb-callout--warning {
+  --sb-callout-color: #ffb067;
+  background: rgb(255 140 40 / 0.18);
 }
 
-.sb-screen .sb-exam-form .sb-card {
-  /* Inner radius = form radius 28 minus form padding 20. */
-  border-radius: 8px;
-  background: #f2f2f5;
-  box-shadow: none;
+.sb-screen .sb-callout--success {
+  --sb-callout-color: #5be3a0;
+  background: rgb(40 200 120 / 0.16);
 }
 
-.sb-screen .sb-exam-form .sb-choice-chip:not(.sb-choice-chip--selected) {
-  background: #f2f2f5;
+.sb-screen .sb-callout--danger {
+  --sb-callout-color: #ff7b8a;
+  background: rgb(255 70 90 / 0.18);
 }
 
-/* Secondary buttons and action tiles on the sky: white tiles with dark text. */
-.sb-screen :is(.sb-button--secondary, .sb-action-tile--secondary) {
-  --color-text: #0a0a0a;
-  background: #ffffff;
-  color: #0a0a0a;
+/* Progress tracks on glass. */
+.sb-screen .sb-progress-bar {
+  background: rgb(255 255 255 / 0.16);
 }
 
-/* Inside white tiles they go back to the soft grey well. */
-.sb-screen :is(.sb-card, .sb-bento__card, .sb-callout, .sb-exam-form) :is(.sb-button--secondary, .sb-action-tile--secondary) {
-  background: rgb(0 0 0 / 0.07);
+.sb-screen .sb-progress-ring__track {
+  stroke: rgb(255 255 255 / 0.18);
 }

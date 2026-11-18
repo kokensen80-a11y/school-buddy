@@ -38,8 +38,11 @@
 
 /* Glass toast: the icon mark takes the dark colour of the smoked glass. */
 .sb-toast--info {
-  --sb-toast-bg: var(--color-surface);
-  background: var(--glass-fill-smoked);
+  --sb-toast-bg: #1d2238;
+  color: #fff;
+  background: rgb(18 22 40 / 0.72);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  backdrop-filter: blur(22px) saturate(160%);
 }
 
 .sb-toast--leaving {
