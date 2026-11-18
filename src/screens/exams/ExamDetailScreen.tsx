@@ -30,6 +30,7 @@ import { goBack, navigate } from '../../lib/router';
 import type { ID, Topic } from '../../types';
 import { examKindLabel, examWhen, plural, subjectOf } from './examHelpers';
 import { AddTopicsSheet, TopicSheet } from './TopicSheets';
+import { ExamPhotos } from './ExamPhotos';
 import './exams.css';
 
 /** One exam: when it is, and the material to learn for it. */
@@ -206,6 +207,8 @@ export default function ExamDetailScreen({ examId }: { examId: ID }) {
             <Text className="sb-exam-notes">{exam.notes}</Text>
           </Section>
         )}
+
+        <ExamPhotos attachments={exam.attachments} />
       </Stack>
 
       <AddTopicsSheet exam={exam} open={adding} onClose={() => setAdding(false)} />

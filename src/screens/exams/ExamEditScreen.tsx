@@ -1,7 +1,8 @@
-import { useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { BookOpen, Plus } from 'lucide-react';
 import {
   Button,
+  Callout,
   ChoiceChip,
   EmptyState,
   Field,
@@ -30,6 +31,8 @@ import type { Difficulty, Exam, ExamKind, ID, SubjectColor } from '../../types';
 import { parseTopicLines, toTopicDrafts } from './parseTopics';
 import { ListDefaults } from './TopicSheets';
 import { plural } from './examHelpers';
+import { PhotoScan, foundSummary } from './PhotoScan';
+import type { ScanResult } from '../../lib/examScan';
 import './exams.css';
 
 interface FormState {
@@ -91,6 +94,37 @@ export default function ExamEditScreen({ examId }: { examId?: ID }) {
   const [topicsText, setTopicsText] = useState('');
   const [minutes, setMinutes] = useState(45);
   const [difficulty, setDifficulty] = useState<Difficulty>(2);
+  const [photo, setPhoto] = useState<File | null>(null);
+  const [scanned, setScanned] = useState<string | null>(null);
+  const [subjectSuggestion, setSubjectSuggestion] = useState<{ name: string; n: number } | null>(null);
+
+  /** The form as it was before the first scan, so a second photo starts clean. */
+  const [preScan, setPreScan] = useState<FormState | null>(null);
+
+  const applyScan = (r: ScanResult, file: File) => {
+    const subjectName = subjects.find((s) => s.id === r.subjectId)?.name ?? r.subjectName;
+    const base = preScan ?? form;
+    if (!preScan) setPreScan(form);
+    setForm(() => {
+      const f = base;
+      const kind = r.kind ?? f.kind;
+      return {
+        ...f,
+        // A new subject name means the user still has to add that subject.
+        subjectId: r.subjectId ?? (r.subjectName ? '' : f.subjectId),
+        date: r.date ?? f.date,
+        time: r.time ?? f.time,
+        location: r.location ?? f.location,
+        kind,
+        title: f.title || r.title || (subjectName ? `${EXAM_KINDS[kind].label} ${subjectName}` : ''),
+        notes: f.notes || (r.endTime ? `Tot ${r.endTime}` : ''),
+      };
+    });
+    if (!r.subjectId && r.subjectName) setSubjectSuggestion((s) => ({ name: r.subjectName!, n: (s?.n ?? 0) + 1 }));
+    setErrors({});
+    setPhoto(file);
+    setScanned(foundSummary(r));
+  };
 
   const parsed = parseTopicLines(topicsText);
   const dirty = JSON.stringify(form) !== JSON.stringify(initial) || topicsText.trim() !== '';
@@ -156,6 +190,7 @@ export default function ExamEditScreen({ examId }: { examId?: ID }) {
         toast.error(result.error);
         return;
       }
+      if (photo) await actions.addAttachment(result.exam.id, photo, photo.name || 'Foto van de toets');
       toast.success('Toets toegevoegd. Je planning is gemaakt.');
       navigate({ name: 'toets', id: result.exam.id }, { replace: true });
     } else {
@@ -177,10 +212,28 @@ export default function ExamEditScreen({ examId }: { examId?: ID }) {
           {isNew ? 'Nieuwe toets' : 'Toets bewerken'}
         </Heading>
 
+        {isNew &&
+          (scanned ? (
+            <Callout
+              tone="success"
+              title={`Gevonden: ${scanned}`}
+              action={
+                <Button size="sm" variant="ghost" onClick={() => setScanned(null)}>
+                  Andere foto
+                </Button>
+              }
+            >
+              Controleer even of alles klopt. De foto wordt bij de toets bewaard.
+            </Callout>
+          ) : (
+            <PhotoScan onResult={applyScan} />
+          ))}
+
         <SubjectPicker
           value={form.subjectId}
           onChange={(id) => set('subjectId', id)}
           error={errors.subject}
+          suggestion={subjectSuggestion}
         />
 
         <Field label="Titel" error={errors.title}>
@@ -274,10 +327,13 @@ function SubjectPicker({
   value,
   onChange,
   error,
+  suggestion,
 }: {
   value: ID;
   onChange: (id: ID) => void;
   error?: string;
+  /** A subject name read from a photo that is not one of the account's subjects yet. */
+  suggestion?: { name: string; n: number } | null;
 }) {
   const subjects = useSubjects();
   const toast = useToast();
@@ -288,6 +344,12 @@ function SubjectPicker({
     () => SUBJECT_COLOR_ORDER.find((c) => !used.has(c)) ?? 'green',
   );
   const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    if (!suggestion) return;
+    setName(suggestion.name);
+    setCreating(true);
+  }, [suggestion]);
 
   const create = async () => {
     if (!name.trim()) {
